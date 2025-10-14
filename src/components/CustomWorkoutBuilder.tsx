@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Search, Plus, X } from "lucide-react";
+import { Search, Plus, X, Dumbbell } from "lucide-react";
 
 interface Exercise {
   id: string;
@@ -176,20 +176,31 @@ export const CustomWorkoutBuilder = ({ open, onClose, onWorkoutCreated }: Custom
             </div>
 
             {exercises.length > 0 && (
-              <div className="mt-2 border rounded-lg divide-y max-h-48 overflow-y-auto">
+              <div className="mt-2 border rounded-lg divide-y max-h-64 overflow-y-auto">
                 {exercises.map((exercise) => (
                   <div
                     key={exercise.id}
-                    className="p-3 hover:bg-accent cursor-pointer flex items-center justify-between"
+                    className="p-3 hover:bg-accent cursor-pointer flex items-start gap-3"
                     onClick={() => addExercise(exercise)}
                   >
-                    <div>
-                      <p className="font-medium">{exercise.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {exercise.muscle_groups.join(", ")}
-                      </p>
+                    <div className="h-16 w-16 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Dumbbell className="h-8 w-8 text-primary" />
                     </div>
-                    <Plus className="h-4 w-4" />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium">{exercise.name}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-1">
+                        {exercise.description}
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs bg-accent px-2 py-0.5 rounded">
+                          {exercise.equipment_needed}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {exercise.muscle_groups.slice(0, 2).join(", ")}
+                        </span>
+                      </div>
+                    </div>
+                    <Plus className="h-5 w-5 flex-shrink-0 mt-1" />
                   </div>
                 ))}
               </div>
@@ -202,17 +213,21 @@ export const CustomWorkoutBuilder = ({ open, onClose, onWorkoutCreated }: Custom
               <div className="space-y-3 mt-2">
                 {selectedExercises.map((exercise) => (
                   <div key={exercise.id} className="border rounded-lg p-3">
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Dumbbell className="h-6 w-6 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
                         <p className="font-medium">{exercise.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {exercise.muscle_groups.join(", ")}
+                        <p className="text-xs text-muted-foreground line-clamp-1">
+                          {exercise.description}
                         </p>
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => removeExercise(exercise.id)}
+                        className="flex-shrink-0"
                       >
                         <X className="h-4 w-4" />
                       </Button>
