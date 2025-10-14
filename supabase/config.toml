@@ -1,1 +1,7 @@
 project_id = "lscgjlawoyjmgvgbspwz"
+
+[functions.calculate-exercise-calories]
+verify_jwt = true
+
+[functions.check-personal-records]
+verify_jwt = true

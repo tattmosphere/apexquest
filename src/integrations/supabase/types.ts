@@ -139,13 +139,76 @@ export type Database = {
           },
         ]
       }
+      personal_records: {
+        Row: {
+          achieved_at: string
+          created_at: string
+          exercise_id: string
+          id: string
+          notes: string | null
+          record_type: string
+          session_id: string | null
+          user_id: string
+          value: number
+        }
+        Insert: {
+          achieved_at?: string
+          created_at?: string
+          exercise_id: string
+          id?: string
+          notes?: string | null
+          record_type: string
+          session_id?: string | null
+          user_id: string
+          value: number
+        }
+        Update: {
+          achieved_at?: string
+          created_at?: string
+          exercise_id?: string
+          id?: string
+          notes?: string | null
+          record_type?: string
+          session_id?: string | null
+          user_id?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personal_records_exercise_id_fkey"
+            columns: ["exercise_id"]
+            isOneToOne: false
+            referencedRelation: "exercises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "personal_records_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "workout_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "personal_records_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
+          activity_level: string | null
+          age: number | null
           body_weight_kg: number | null
           body_weight_lbs: number | null
           created_at: string
           current_streak: number
           display_name: string | null
+          gender: string | null
+          height_cm: number | null
+          height_inches: number | null
           id: string
           last_workout_date: string | null
           level: number
@@ -156,11 +219,16 @@ export type Database = {
           weight_updated_at: string | null
         }
         Insert: {
+          activity_level?: string | null
+          age?: number | null
           body_weight_kg?: number | null
           body_weight_lbs?: number | null
           created_at?: string
           current_streak?: number
           display_name?: string | null
+          gender?: string | null
+          height_cm?: number | null
+          height_inches?: number | null
           id: string
           last_workout_date?: string | null
           level?: number
@@ -171,11 +239,16 @@ export type Database = {
           weight_updated_at?: string | null
         }
         Update: {
+          activity_level?: string | null
+          age?: number | null
           body_weight_kg?: number | null
           body_weight_lbs?: number | null
           created_at?: string
           current_streak?: number
           display_name?: string | null
+          gender?: string | null
+          height_cm?: number | null
+          height_inches?: number | null
           id?: string
           last_workout_date?: string | null
           level?: number
@@ -462,7 +535,17 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      user_workout_stats: {
+        Row: {
+          total_calories: number | null
+          total_minutes: number | null
+          total_workouts: number | null
+          unique_days: number | null
+          user_id: string | null
+          week: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       update_user_streak: {
