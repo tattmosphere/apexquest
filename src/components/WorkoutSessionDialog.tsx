@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Check, Plus, Minus, Dumbbell } from "lucide-react";
+import { Check, Plus, Minus, Dumbbell, Edit, X, Trash2 } from "lucide-react";
 
 interface Exercise {
   id: string;
@@ -54,6 +54,9 @@ export const WorkoutSessionDialog = ({ open, onClose, workoutId, workoutTitle }:
   const [sessionExercises, setSessionExercises] = useState<SessionExercise[]>([]);
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(true);
+  const [editMode, setEditMode] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [availableExercises, setAvailableExercises] = useState<Exercise[]>([]);
 
   useEffect(() => {
     if (open && user && workoutId) {
@@ -157,6 +160,79 @@ export const WorkoutSessionDialog = ({ open, onClose, workoutId, workoutTitle }:
     toast.success("Exercise completed!");
   };
 
+  const searchExercises = async (term: string) => {
+    if (term.length < 2) {
+      setAvailableExercises([]);
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("exercises")
+      .select("*")
+      .ilike("name", `%${term}%`)
+      .limit(5);
+
+    if (error) {
+      console.error("Error searching exercises:", error);
+      return;
+    }
+
+    setAvailableExercises(data || []);
+  };
+
+  useEffect(() => {
+    if (editMode) {
+      const debounce = setTimeout(() => {
+        searchExercises(searchTerm);
+      }, 300);
+
+      return () => clearTimeout(debounce);
+    }
+  }, [searchTerm, editMode]);
+
+  const addExerciseToSession = (exercise: Exercise) => {
+    const newWorkoutEx: WorkoutExercise = {
+      id: `temp-${Date.now()}`,
+      exercise_id: exercise.id,
+      order_index: workoutExercises.length,
+      sets: 3,
+      target_reps: 12,
+      target_weight: null,
+      rest_seconds: 60,
+      exercises: exercise,
+    };
+
+    const newSessionEx: SessionExercise = {
+      exercise_id: exercise.id,
+      order_index: sessionExercises.length,
+      sets_completed: 0,
+      reps: [12, 12, 12],
+      weights: [0, 0, 0],
+      completed: false,
+    };
+
+    setWorkoutExercises([...workoutExercises, newWorkoutEx]);
+    setSessionExercises([...sessionExercises, newSessionEx]);
+    setSearchTerm("");
+    setAvailableExercises([]);
+    toast.success("Exercise added to workout");
+  };
+
+  const removeExerciseFromSession = (index: number) => {
+    if (!confirm("Remove this exercise from the workout?")) return;
+    
+    const updatedWorkoutEx = workoutExercises.filter((_, i) => i !== index);
+    const updatedSessionEx = sessionExercises.filter((_, i) => i !== index);
+    
+    // Reorder
+    updatedWorkoutEx.forEach((ex, i) => { ex.order_index = i; });
+    updatedSessionEx.forEach((ex, i) => { ex.order_index = i; });
+    
+    setWorkoutExercises(updatedWorkoutEx);
+    setSessionExercises(updatedSessionEx);
+    toast.success("Exercise removed");
+  };
+
   const finishWorkout = async () => {
     if (!sessionId) return;
 
@@ -210,10 +286,29 @@ export const WorkoutSessionDialog = ({ open, onClose, workoutId, workoutTitle }:
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl flex items-center gap-2">
-            <Dumbbell className="h-6 w-6 text-primary" />
-            {workoutTitle}
-          </DialogTitle>
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-2xl flex items-center gap-2">
+              <Dumbbell className="h-6 w-6 text-primary" />
+              {workoutTitle}
+            </DialogTitle>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setEditMode(!editMode)}
+            >
+              {editMode ? (
+                <>
+                  <X className="h-4 w-4 mr-2" />
+                  Done
+                </>
+              ) : (
+                <>
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit Exercises
+                </>
+              )}
+            </Button>
+          </div>
           <DialogDescription>
             Track your sets, reps, and weights for each exercise
           </DialogDescription>
@@ -243,6 +338,15 @@ export const WorkoutSessionDialog = ({ open, onClose, workoutId, workoutTitle }:
                           {workoutEx.target_weight && ` @ ${workoutEx.target_weight} ${unitLabel}`}
                         </p>
                       </div>
+                      {editMode && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeExerciseFromSession(exerciseIndex)}
+                        >
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      )}
                     </div>
 
                     <div className="space-y-3">
@@ -309,6 +413,43 @@ export const WorkoutSessionDialog = ({ open, onClose, workoutId, workoutTitle }:
                 </Card>
               );
             })}
+
+            {editMode && (
+              <Card className="p-4 bg-card/50 border-2 border-dashed">
+                <div className="space-y-3">
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <Plus className="h-5 w-5 text-primary" />
+                    Add Exercise to Workout
+                  </h3>
+                  <div className="relative">
+                    <Input
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      placeholder="Search for exercises..."
+                    />
+                    {availableExercises.length > 0 && (
+                      <div className="absolute z-10 w-full mt-1 bg-card border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                        {availableExercises.map((exercise) => (
+                          <button
+                            key={exercise.id}
+                            onClick={() => addExerciseToSession(exercise)}
+                            className="w-full px-4 py-3 text-left hover:bg-accent transition-colors border-b last:border-b-0"
+                          >
+                            <div className="font-medium">{exercise.name}</div>
+                            <div className="text-sm text-muted-foreground line-clamp-1">
+                              {exercise.description}
+                            </div>
+                            <div className="text-xs text-muted-foreground mt-1">
+                              {exercise.muscle_groups.join(", ")} • {exercise.equipment_needed}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Card>
+            )}
 
             <div className="space-y-2 pt-2">
               <label className="text-sm font-medium">Workout Notes (Optional)</label>

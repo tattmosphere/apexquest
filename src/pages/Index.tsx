@@ -11,6 +11,7 @@ import { CustomWorkoutBuilder } from "@/components/CustomWorkoutBuilder";
 import { SettingsModal } from "@/components/SettingsModal";
 import { PremiumBanner } from "@/components/PremiumBanner";
 import { WorkoutSessionDialog } from "@/components/WorkoutSessionDialog";
+import { WorkoutEditDialog } from "@/components/WorkoutEditDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
@@ -62,6 +63,7 @@ const Index = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [activeWorkoutId, setActiveWorkoutId] = useState<string | null>(null);
   const [activeWorkoutTitle, setActiveWorkoutTitle] = useState<string>("");
+  const [editWorkoutId, setEditWorkoutId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -174,6 +176,25 @@ const Index = () => {
     }
     setActiveWorkoutId(workoutId);
     setActiveWorkoutTitle(workoutTitle);
+  };
+
+  const handleDeleteWorkout = async (workoutId: string) => {
+    if (!confirm("Are you sure you want to delete this workout?")) return;
+
+    try {
+      const { error } = await supabase
+        .from("workouts")
+        .delete()
+        .eq("id", workoutId);
+
+      if (error) throw error;
+
+      toast.success("Workout deleted");
+      loadData();
+    } catch (error: any) {
+      console.error("Error deleting workout:", error);
+      toast.error("Failed to delete workout");
+    }
   };
 
   const checkAchievements = async () => {
@@ -350,6 +371,9 @@ const Index = () => {
                 duration={`${workout.duration_minutes} min`}
                 exercises={workout.exercises_count}
                 onStart={() => handleStartWorkout(workout.id, workout.title)}
+                isCustom={(workout as any).is_custom && (workout as any).user_id === user?.id}
+                onEdit={() => setEditWorkoutId(workout.id)}
+                onDelete={() => handleDeleteWorkout(workout.id)}
               />
             ))}
           </div>
@@ -420,6 +444,13 @@ const Index = () => {
           workoutTitle={activeWorkoutTitle}
         />
       )}
+
+      <WorkoutEditDialog
+        open={!!editWorkoutId}
+        onClose={() => setEditWorkoutId(null)}
+        workoutId={editWorkoutId}
+        onWorkoutUpdated={loadData}
+      />
     </div>
   );
 };
