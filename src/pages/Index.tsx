@@ -44,9 +44,9 @@ interface UserAchievement {
 }
 
 const Index = () => {
+  const navigate = useNavigate();
   const { user, loading: authLoading, signOut } = useAuth();
   const { profile, loading: profileLoading } = useProfile();
-  const navigate = useNavigate();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
@@ -107,7 +107,10 @@ const Index = () => {
   }, [user]);
 
   const handleStartWorkout = async (workout: Workout) => {
-    if (!user) return;
+    if (!user) {
+      toast.error("Please sign in to log workouts");
+      return;
+    }
 
     try {
       // Log the workout
@@ -223,7 +226,15 @@ const Index = () => {
                   {profile.current_streak} Day Streak!
                 </span>
               </div>
-              <Button onClick={signOut} variant="ghost" size="sm" className="text-primary-foreground hover:bg-primary-foreground/10">
+              <Button 
+                onClick={async () => {
+                  await signOut();
+                  navigate("/auth");
+                }} 
+                variant="ghost" 
+                size="sm" 
+                className="text-primary-foreground hover:bg-primary-foreground/10"
+              >
                 <LogOut className="h-4 w-4 mr-2" />
                 Sign Out
               </Button>

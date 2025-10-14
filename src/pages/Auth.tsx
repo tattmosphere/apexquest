@@ -23,12 +23,18 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    await signUp(email, password, displayName);
+    const { error } = await signUp(email, password, displayName);
+    if (!error) {
+      navigate("/");
+    }
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    await signIn(email, password);
+    const { error } = await signIn(email, password);
+    if (!error) {
+      navigate("/");
+    }
   };
 
   return (
