@@ -11,7 +11,10 @@ interface WorkoutCardProps {
 
 export const WorkoutCard = ({ title, duration, exercises, onStart }: WorkoutCardProps) => {
   return (
-    <Card className="group overflow-hidden bg-gradient-card hover:shadow-elevated transition-all duration-300 cursor-pointer border border-border/50">
+    <Card 
+      className="group overflow-hidden bg-gradient-card hover:shadow-elevated transition-all duration-300 cursor-pointer border border-border/50"
+      onClick={onStart}
+    >
       <div className="p-5 space-y-4">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
@@ -34,7 +37,6 @@ export const WorkoutCard = ({ title, duration, exercises, onStart }: WorkoutCard
           </div>
         </div>
         <Button 
-          onClick={onStart}
           variant="hero"
           className="w-full"
         >

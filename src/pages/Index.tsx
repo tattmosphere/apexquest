@@ -7,6 +7,9 @@ import { AvatarDisplay } from "@/components/AvatarDisplay";
 import { WorkoutCard } from "@/components/WorkoutCard";
 import { AchievementBadge } from "@/components/AchievementBadge";
 import { StatCard } from "@/components/StatCard";
+import { CustomWorkoutBuilder } from "@/components/CustomWorkoutBuilder";
+import { SettingsModal } from "@/components/SettingsModal";
+import { PremiumBanner } from "@/components/PremiumBanner";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,7 +22,9 @@ import {
   Calendar,
   Zap,
   Award,
-  LogOut
+  LogOut,
+  Settings,
+  Plus
 } from "lucide-react";
 import heroImage from "@/assets/hero-avatars.jpg";
 
@@ -52,12 +57,65 @@ const Index = () => {
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
   const [workoutLogs, setWorkoutLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showCustomBuilder, setShowCustomBuilder] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) {
       navigate("/auth");
+      return;
+    }
+    
+    if (user) {
+      loadData();
     }
   }, [user, authLoading, navigate]);
+
+  const loadData = async () => {
+    if (!user) return;
+
+    try {
+      // Load workouts (including custom ones)
+      const { data: workoutsData, error: workoutsError } = await supabase
+        .from("workouts")
+        .select("*")
+        .or(`is_custom.eq.false,user_id.eq.${user.id}`)
+        .order("created_at", { ascending: false });
+
+      if (workoutsError) throw workoutsError;
+      setWorkouts(workoutsData || []);
+
+      // Load achievements
+      const { data: achievementsData, error: achievementsError } = await supabase
+        .from("achievements")
+        .select("*");
+
+      if (achievementsError) throw achievementsError;
+      setAchievements(achievementsData || []);
+
+      // Load user achievements
+      const { data: userAchievementsData, error: userAchievementsError } = await supabase
+        .from("user_achievements")
+        .select("*, achievements(*)")
+        .eq("user_id", user.id);
+
+      if (userAchievementsError) throw userAchievementsError;
+      setUserAchievements(userAchievementsData || []);
+
+      // Load workout logs
+      const { data: logsData, error: logsError } = await supabase
+        .from("workout_logs")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (logsError) throw logsError;
+      setWorkoutLogs(logsData || []);
+    } catch (error: any) {
+      console.error("Error loading data:", error);
+      toast.error("Failed to load data");
+    }
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -106,41 +164,12 @@ const Index = () => {
     fetchData();
   }, [user]);
 
-  const handleStartWorkout = async (workout: Workout) => {
+  const handleStartWorkout = (workoutId: string) => {
     if (!user) {
-      toast.error("Please sign in to log workouts");
+      toast.error("Please sign in to start a workout");
       return;
     }
-
-    try {
-      // Log the workout
-      const { error: logError } = await supabase
-        .from("workout_logs")
-        .insert({
-          user_id: user.id,
-          workout_id: workout.id,
-          workout_date: new Date().toISOString().split('T')[0],
-          duration_minutes: workout.duration_minutes,
-        });
-
-      if (logError) throw logError;
-
-      // Update streak
-      const { error: streakError } = await supabase.rpc("update_user_streak", {
-        p_user_id: user.id,
-        p_workout_date: new Date().toISOString().split('T')[0],
-      });
-
-      if (streakError) throw streakError;
-
-      // Check for new achievements
-      await checkAchievements();
-
-      toast.success(`${workout.title} completed! 🎉`);
-    } catch (error: any) {
-      console.error("Error logging workout:", error);
-      toast.error("Failed to log workout");
-    }
+    navigate(`/workout/${workoutId}`);
   };
 
   const checkAchievements = async () => {
@@ -226,18 +255,27 @@ const Index = () => {
                   {profile.current_streak} Day Streak!
                 </span>
               </div>
-              <Button 
-                onClick={async () => {
-                  await signOut();
-                  navigate("/auth");
-                }} 
-                variant="ghost" 
-                size="sm" 
-                className="text-primary-foreground hover:bg-primary-foreground/10"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => setShowSettings(true)}
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-primary-foreground hover:bg-primary-foreground/10"
+                >
+                  <Settings className="h-4 w-4" />
+                </Button>
+                <Button 
+                  onClick={async () => {
+                    await signOut();
+                    navigate("/auth");
+                  }} 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-primary-foreground hover:bg-primary-foreground/10"
+                >
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground drop-shadow-lg">
               Welcome Back,
@@ -284,10 +322,21 @@ const Index = () => {
           />
         </div>
 
+        {/* Premium Banner */}
+        <PremiumBanner />
+
         {/* Today's Workouts */}
         <div className="space-y-4 animate-fade-in">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-foreground">Available Workouts</h2>
+            <Button
+              onClick={() => setShowCustomBuilder(true)}
+              variant="outline"
+              size="sm"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Create Custom
+            </Button>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {workouts.map((workout) => (
@@ -296,7 +345,7 @@ const Index = () => {
                 title={workout.title}
                 duration={`${workout.duration_minutes} min`}
                 exercises={workout.exercises_count}
-                onStart={() => handleStartWorkout(workout)}
+                onStart={() => handleStartWorkout(workout.id)}
               />
             ))}
           </div>
@@ -343,6 +392,17 @@ const Index = () => {
           </Card>
         </section>
       )}
+
+      <CustomWorkoutBuilder
+        open={showCustomBuilder}
+        onClose={() => setShowCustomBuilder(false)}
+        onWorkoutCreated={loadData}
+      />
+
+      <SettingsModal
+        open={showSettings}
+        onClose={() => setShowSettings(false)}
+      />
     </div>
   );
 };
