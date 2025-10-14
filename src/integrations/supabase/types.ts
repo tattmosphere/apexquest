@@ -52,36 +52,97 @@ export type Database = {
           category: string
           created_at: string
           description: string | null
+          difficulty_level: string | null
           equipment_needed: string | null
           id: string
+          intensity_level: string | null
+          is_custom: boolean | null
+          met_value: number | null
           muscle_groups: string[]
           name: string
+          primary_muscle_group: string | null
+          recommended_rest_seconds: number | null
+          search_vector: unknown | null
+          secondary_muscle_groups: string[] | null
+          supports_distance: boolean | null
+          supports_reps: boolean | null
+          supports_sets: boolean | null
+          supports_time: boolean | null
+          supports_weight: boolean | null
+          thumbnail_url: string | null
+          typical_rep_range: string | null
+          typical_set_range: string | null
+          user_id: string | null
           video_url: string | null
         }
         Insert: {
           category: string
           created_at?: string
           description?: string | null
+          difficulty_level?: string | null
           equipment_needed?: string | null
           id?: string
+          intensity_level?: string | null
+          is_custom?: boolean | null
+          met_value?: number | null
           muscle_groups?: string[]
           name: string
+          primary_muscle_group?: string | null
+          recommended_rest_seconds?: number | null
+          search_vector?: unknown | null
+          secondary_muscle_groups?: string[] | null
+          supports_distance?: boolean | null
+          supports_reps?: boolean | null
+          supports_sets?: boolean | null
+          supports_time?: boolean | null
+          supports_weight?: boolean | null
+          thumbnail_url?: string | null
+          typical_rep_range?: string | null
+          typical_set_range?: string | null
+          user_id?: string | null
           video_url?: string | null
         }
         Update: {
           category?: string
           created_at?: string
           description?: string | null
+          difficulty_level?: string | null
           equipment_needed?: string | null
           id?: string
+          intensity_level?: string | null
+          is_custom?: boolean | null
+          met_value?: number | null
           muscle_groups?: string[]
           name?: string
+          primary_muscle_group?: string | null
+          recommended_rest_seconds?: number | null
+          search_vector?: unknown | null
+          secondary_muscle_groups?: string[] | null
+          supports_distance?: boolean | null
+          supports_reps?: boolean | null
+          supports_sets?: boolean | null
+          supports_time?: boolean | null
+          supports_weight?: boolean | null
+          thumbnail_url?: string | null
+          typical_rep_range?: string | null
+          typical_set_range?: string | null
+          user_id?: string | null
           video_url?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "exercises_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
+          body_weight_kg: number | null
+          body_weight_lbs: number | null
           created_at: string
           current_streak: number
           display_name: string | null
@@ -92,8 +153,11 @@ export type Database = {
           preferred_units: string
           total_points: number
           updated_at: string
+          weight_updated_at: string | null
         }
         Insert: {
+          body_weight_kg?: number | null
+          body_weight_lbs?: number | null
           created_at?: string
           current_streak?: number
           display_name?: string | null
@@ -104,8 +168,11 @@ export type Database = {
           preferred_units?: string
           total_points?: number
           updated_at?: string
+          weight_updated_at?: string | null
         }
         Update: {
+          body_weight_kg?: number | null
+          body_weight_lbs?: number | null
           created_at?: string
           current_streak?: number
           display_name?: string | null
@@ -116,6 +183,7 @@ export type Database = {
           preferred_units?: string
           total_points?: number
           updated_at?: string
+          weight_updated_at?: string | null
         }
         Relationships: []
       }
@@ -242,36 +310,45 @@ export type Database = {
       }
       workout_session_exercises: {
         Row: {
+          calories_burned: number | null
           completed: boolean
           created_at: string
+          duration_minutes: number | null
           exercise_id: string
           id: string
           order_index: number
           reps: Json
           session_id: string
           sets_completed: number
+          user_weight_at_time: number | null
           weights: Json
         }
         Insert: {
+          calories_burned?: number | null
           completed?: boolean
           created_at?: string
+          duration_minutes?: number | null
           exercise_id: string
           id?: string
           order_index: number
           reps?: Json
           session_id: string
           sets_completed?: number
+          user_weight_at_time?: number | null
           weights?: Json
         }
         Update: {
+          calories_burned?: number | null
           completed?: boolean
           created_at?: string
+          duration_minutes?: number | null
           exercise_id?: string
           id?: string
           order_index?: number
           reps?: Json
           session_id?: string
           sets_completed?: number
+          user_weight_at_time?: number | null
           weights?: Json
         }
         Relationships: [
