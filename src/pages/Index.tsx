@@ -10,6 +10,7 @@ import { StatCard } from "@/components/StatCard";
 import { CustomWorkoutBuilder } from "@/components/CustomWorkoutBuilder";
 import { SettingsModal } from "@/components/SettingsModal";
 import { PremiumBanner } from "@/components/PremiumBanner";
+import { WorkoutSessionDialog } from "@/components/WorkoutSessionDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
@@ -59,6 +60,8 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [showCustomBuilder, setShowCustomBuilder] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [activeWorkoutId, setActiveWorkoutId] = useState<string | null>(null);
+  const [activeWorkoutTitle, setActiveWorkoutTitle] = useState<string>("");
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -164,12 +167,13 @@ const Index = () => {
     fetchData();
   }, [user]);
 
-  const handleStartWorkout = (workoutId: string) => {
+  const handleStartWorkout = (workoutId: string, workoutTitle: string) => {
     if (!user) {
       toast.error("Please sign in to start a workout");
       return;
     }
-    navigate(`/workout/${workoutId}`);
+    setActiveWorkoutId(workoutId);
+    setActiveWorkoutTitle(workoutTitle);
   };
 
   const checkAchievements = async () => {
@@ -345,7 +349,7 @@ const Index = () => {
                 title={workout.title}
                 duration={`${workout.duration_minutes} min`}
                 exercises={workout.exercises_count}
-                onStart={() => handleStartWorkout(workout.id)}
+                onStart={() => handleStartWorkout(workout.id, workout.title)}
               />
             ))}
           </div>
@@ -403,6 +407,19 @@ const Index = () => {
         open={showSettings}
         onClose={() => setShowSettings(false)}
       />
+
+      {activeWorkoutId && (
+        <WorkoutSessionDialog
+          open={!!activeWorkoutId}
+          onClose={() => {
+            setActiveWorkoutId(null);
+            setActiveWorkoutTitle("");
+            loadData();
+          }}
+          workoutId={activeWorkoutId}
+          workoutTitle={activeWorkoutTitle}
+        />
+      )}
     </div>
   );
 };
