@@ -15,7 +15,7 @@ import {
   Zap,
   Award
 } from "lucide-react";
-import heroImage from "@/assets/hero-fitness.jpg";
+import heroImage from "@/assets/hero-avatars.jpg";
 
 const Index = () => {
   // Mock data - in a real app, this would come from your backend/state management
