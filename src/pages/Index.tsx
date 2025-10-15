@@ -12,6 +12,8 @@ import { SettingsModal } from "@/components/SettingsModal";
 import { PremiumBanner } from "@/components/PremiumBanner";
 import { WorkoutSessionDialog } from "@/components/WorkoutSessionDialog";
 import { WorkoutEditDialog } from "@/components/WorkoutEditDialog";
+import { QuickWorkoutDialog } from "@/components/QuickWorkoutDialog";
+import { LogPastWorkoutDialog } from "@/components/LogPastWorkoutDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,7 +28,9 @@ import {
   Award,
   LogOut,
   Settings,
-  Plus
+  Plus,
+  Play,
+  History
 } from "lucide-react";
 import heroImage from "@/assets/hero-avatars.jpg";
 
@@ -64,6 +68,8 @@ const Index = () => {
   const [activeWorkoutId, setActiveWorkoutId] = useState<string | null>(null);
   const [activeWorkoutTitle, setActiveWorkoutTitle] = useState<string>("");
   const [editWorkoutId, setEditWorkoutId] = useState<string | null>(null);
+  const [showQuickWorkout, setShowQuickWorkout] = useState(false);
+  const [showLogPast, setShowLogPast] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -350,6 +356,32 @@ const Index = () => {
         {/* Premium Banner */}
         <PremiumBanner />
 
+        {/* Quick Actions */}
+        <div className="grid md:grid-cols-2 gap-4 animate-fade-in">
+          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setShowQuickWorkout(true)}>
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-primary/10 rounded-lg">
+                <Play className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold">Quick Workout</h3>
+                <p className="text-sm text-muted-foreground">Start tracking a cardio session now</p>
+              </div>
+            </div>
+          </Card>
+          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setShowLogPast(true)}>
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-accent/10 rounded-lg">
+                <History className="h-6 w-6 text-accent" />
+              </div>
+              <div>
+                <h3 className="font-semibold">Log Past Workout</h3>
+                <p className="text-sm text-muted-foreground">Add a workout from earlier today</p>
+              </div>
+            </div>
+          </Card>
+        </div>
+
         {/* Today's Workouts */}
         <div className="space-y-4 animate-fade-in">
           <div className="flex items-center justify-between">
@@ -450,6 +482,22 @@ const Index = () => {
         onClose={() => setEditWorkoutId(null)}
         workoutId={editWorkoutId}
         onWorkoutUpdated={loadData}
+      />
+
+      <QuickWorkoutDialog
+        open={showQuickWorkout}
+        onOpenChange={setShowQuickWorkout}
+        userId={user.id}
+        userWeight={profile.body_weight_lbs || 150}
+        onWorkoutComplete={loadData}
+      />
+
+      <LogPastWorkoutDialog
+        open={showLogPast}
+        onOpenChange={setShowLogPast}
+        userId={user.id}
+        userWeight={profile.body_weight_lbs || 150}
+        onWorkoutLogged={loadData}
       />
     </div>
   );

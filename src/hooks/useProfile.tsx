@@ -10,6 +10,8 @@ export interface Profile {
   current_streak: number;
   longest_streak: number;
   last_workout_date: string | null;
+  body_weight_lbs: number | null;
+  body_weight_kg: number | null;
 }
 
 export const useProfile = () => {
