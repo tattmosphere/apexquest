@@ -6,7 +6,6 @@ import { StreakCounter } from "@/components/StreakCounter";
 import { AvatarDisplay } from "@/components/AvatarDisplay";
 import { WorkoutCard } from "@/components/WorkoutCard";
 import { AchievementBadge } from "@/components/AchievementBadge";
-import { SortableAchievementBadge } from "@/components/SortableAchievementBadge";
 import { SortableDashboardSection } from "@/components/SortableDashboardSection";
 import { StatCard } from "@/components/StatCard";
 import { CustomWorkoutBuilder } from "@/components/CustomWorkoutBuilder";
@@ -44,7 +43,6 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-  rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import { 
   Flame, 
@@ -91,7 +89,6 @@ const Index = () => {
   const { profile, loading: profileLoading } = useProfile();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
-  const [achievementOrder, setAchievementOrder] = useState<string[]>([]);
   const [sectionOrder, setSectionOrder] = useState<string[]>([
     "rpg-features",
     "stats",
@@ -156,27 +153,6 @@ const Index = () => {
     }
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (over && active.id !== over.id) {
-      setAchievementOrder((items) => {
-        const oldIndex = items.indexOf(active.id as string);
-        const newIndex = items.indexOf(over.id as string);
-        const newOrder = arrayMove(items, oldIndex, newIndex);
-        
-        // Save to localStorage
-        localStorage.setItem('achievementOrder', JSON.stringify(newOrder));
-        
-        return newOrder;
-      });
-    }
-  };
-
-  const orderedAchievements = achievementOrder
-    .map(id => achievements.find(a => a.id === id))
-    .filter((a): a is Achievement => a !== undefined);
-
   useEffect(() => {
     if (!authLoading && !user) {
       navigate("/auth");
@@ -224,27 +200,6 @@ const Index = () => {
       if (achievementsError) throw achievementsError;
       const achievementsList = achievementsData || [];
       setAchievements(achievementsList);
-      
-      // Load saved order from localStorage or initialize with default order
-      const savedOrder = localStorage.getItem('achievementOrder');
-      if (savedOrder) {
-        try {
-          const parsedOrder = JSON.parse(savedOrder);
-          // Filter to only include valid achievement IDs
-          const validOrder = parsedOrder.filter((id: string) => 
-            achievementsList.some(a => a.id === id)
-          );
-          // Add any new achievements that aren't in the saved order
-          const newIds = achievementsList
-            .filter(a => !validOrder.includes(a.id))
-            .map(a => a.id);
-          setAchievementOrder([...validOrder, ...newIds]);
-        } catch {
-          setAchievementOrder(achievementsList.map(a => a.id));
-        }
-      } else {
-        setAchievementOrder(achievementsList.map(a => a.id));
-      }
 
       // Load user achievements
       const { data: userAchievementsData, error: userAchievementsError } = await supabase
@@ -620,33 +575,23 @@ const Index = () => {
                         <div className="space-y-4 animate-fade-in">
                           <div className="flex items-center justify-between">
                             <h2 className="text-2xl font-bold text-foreground">Achievements</h2>
-                            <p className="text-sm text-muted-foreground">Drag to reorder</p>
                           </div>
-                          <DndContext
-                            sensors={sensors}
-                            collisionDetection={closestCenter}
-                            onDragEnd={handleDragEnd}
-                          >
-                            <SortableContext items={achievementOrder} strategy={rectSortingStrategy}>
-                              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {orderedAchievements.map((achievement) => {
-                                  const isUnlocked = userAchievements.some(
-                                    (ua) => ua.achievement_id === achievement.id
-                                  );
-                                  return (
-                                    <SortableAchievementBadge
-                                      key={achievement.id}
-                                      id={achievement.id}
-                                      title={achievement.title}
-                                      description={achievement.description}
-                                      unlocked={isUnlocked}
-                                      icon={achievement.icon_name ? <Award className="h-6 w-6" /> : undefined}
-                                    />
-                                  );
-                                })}
-                              </div>
-                            </SortableContext>
-                          </DndContext>
+                          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {achievements.map((achievement) => {
+                              const isUnlocked = userAchievements.some(
+                                (ua) => ua.achievement_id === achievement.id
+                              );
+                              return (
+                                <AchievementBadge
+                                  key={achievement.id}
+                                  title={achievement.title}
+                                  description={achievement.description}
+                                  unlocked={isUnlocked}
+                                  icon={achievement.icon_name ? <Award className="h-6 w-6" /> : undefined}
+                                />
+                              );
+                            })}
+                          </div>
                         </div>
                       </SortableDashboardSection>
                     );
