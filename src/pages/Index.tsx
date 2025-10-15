@@ -105,8 +105,16 @@ const Index = () => {
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    if (profile && !character) {
+    // Only show character creation if:
+    // 1. Profile exists (user is logged in)
+    // 2. Character is null (no character created yet)
+    // 3. Dialog is not already open (prevent reopening)
+    if (profile && !character && !showCharacterCreation) {
       setShowCharacterCreation(true);
+    }
+    // Close dialog if character was created
+    if (character && showCharacterCreation) {
+      setShowCharacterCreation(false);
     }
   }, [profile, character]);
 
