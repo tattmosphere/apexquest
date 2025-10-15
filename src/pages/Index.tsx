@@ -19,6 +19,8 @@ import { DailyQuestsCard } from "@/components/DailyQuestsCard";
 import { AbilityTreeDialog } from "@/components/AbilityTreeDialog";
 import { StoryModeDialog } from "@/components/StoryModeDialog";
 import { StoryProgressCard } from "@/components/StoryProgressCard";
+import { StoryCardViewer } from "@/components/StoryCardViewer";
+import { getChapter } from "@/data/storyChapters";
 import { ShopDialog } from "@/components/ShopDialog";
 import { useCharacter } from "@/hooks/useCharacter";
 import { useDailyQuests } from "@/hooks/useDailyQuests";
@@ -85,6 +87,8 @@ const Index = () => {
   const [showCharacterCreation, setShowCharacterCreation] = useState(false);
   const [showAbilities, setShowAbilities] = useState(false);
   const [showStory, setShowStory] = useState(false);
+  const [showStoryCards, setShowStoryCards] = useState(false);
+  const [currentStoryChapter, setCurrentStoryChapter] = useState(1);
   const [showShop, setShowShop] = useState(false);
   const { character } = useCharacter();
   const { quests } = useDailyQuests();
@@ -382,9 +386,11 @@ const Index = () => {
             <AvatarDisplay level={profile.level} totalPoints={profile.total_points} />
             {character && (
               <StoryProgressCard
-                currentChapter={1}
-                chapterProgress={33}
-                onViewStory={() => setShowStoryMode(true)}
+                currentChapter={currentStoryChapter}
+                chapterProgress={100}
+                onViewStory={() => {
+                  setShowStoryCards(true);
+                }}
               />
             )}
           </div>
@@ -617,6 +623,16 @@ const Index = () => {
         open={showStory}
         onOpenChange={setShowStory}
       />
+      
+      {getChapter(currentStoryChapter) && (
+        <StoryCardViewer
+          open={showStoryCards}
+          onOpenChange={setShowStoryCards}
+          chapterNumber={currentStoryChapter}
+          chapterTitle={getChapter(currentStoryChapter)!.title}
+          cards={getChapter(currentStoryChapter)!.cards}
+        />
+      )}
       
       <ShopDialog 
         open={showShop}

@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Swords, Target } from "lucide-react";
 import { useState } from "react";
+import { getChapter } from "@/data/storyChapters";
 
 interface StoryProgressCardProps {
   currentChapter: number;
@@ -10,50 +11,7 @@ interface StoryProgressCardProps {
   onViewStory: () => void;
 }
 
-// Chapter data structure
-const CHAPTERS = [
-  {
-    id: 1,
-    title: "The Bunker",
-    act: "Act 1: Awakening",
-    requirement: "Complete 1 workout",
-    boss: null,
-    preview: "You wake in darkness. The world has ended. It's time to survive."
-  },
-  {
-    id: 2,
-    title: "First Light",
-    act: "Act 1: Awakening",
-    requirement: "Complete 1 workout",
-    boss: null,
-    preview: "The surface awaits. You're not alone in the wasteland."
-  },
-  {
-    id: 3,
-    title: "The Raider Camp",
-    act: "Act 1: Awakening",
-    requirement: "Complete 2 strength workouts",
-    boss: "Ironjaw (Raider Leader)",
-    preview: "Raiders control the supply depot. You'll need strength to take them on."
-  },
-  {
-    id: 4,
-    title: "The Safe Haven",
-    act: "Act 1: Awakening",
-    requirement: "Complete 1 cardio workout",
-    boss: null,
-    preview: "Raven leads you to a survivor settlement. But can they be trusted?"
-  },
-  {
-    id: 5,
-    title: "The Horde",
-    act: "Act 2: Rising Threat",
-    requirement: "Complete 3 workouts (any type)",
-    boss: "Bloater (Mutant Boss)",
-    preview: "A massive horde approaches the settlement. Prepare for battle."
-  },
-  // Add more chapters as needed
-];
+
 
 export const StoryProgressCard = ({ 
   currentChapter, 
@@ -62,8 +20,10 @@ export const StoryProgressCard = ({
 }: StoryProgressCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
   
-  const chapter = CHAPTERS.find(c => c.id === currentChapter) || CHAPTERS[0];
-  const nextChapter = CHAPTERS.find(c => c.id === currentChapter + 1);
+  const chapter = getChapter(currentChapter);
+  const nextChapter = getChapter(currentChapter + 1);
+  
+  if (!chapter) return null;
   
   return (
     <Card className="relative overflow-hidden bg-gradient-to-br from-card via-card to-card/90 border-2 border-primary/20 shadow-lg">
