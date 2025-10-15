@@ -1,0 +1,76 @@
+{
+  "act1": {
+    "title": "Awakening",
+    "description": "The world has changed. Survival is all that matters.",
+    "chapters": [
+      {
+        "id": 1,
+        "title": "First Light",
+        "content": "[PLACEHOLDER - Story narrative to be provided]\n\nYou wake in an abandoned bunker. The air is stale, and emergency lights flicker overhead. Through a cracked mirror, you see yourself - different, changed. The world above awaits.\n\nWhat will you become?",
+        "unlock_level": 1,
+        "completion_requirement": {
+          "workouts": 3
+        },
+        "xp_reward": 500,
+        "credits_reward": 250
+      },
+      {
+        "id": 2,
+        "title": "Choose Your Path",
+        "content": "[PLACEHOLDER - Choice narrative to be provided]\n\nThree groups have survived the collapse. Each offers sanctuary, but demands loyalty.\n\nWhich path will you walk?",
+        "unlock_level": 5,
+        "choice": {
+          "type": "faction",
+          "options": [
+            {
+              "id": "military",
+              "label": "Join the Military Faction",
+              "description": "[PLACEHOLDER] Discipline and structure. They promise order in chaos."
+            },
+            {
+              "id": "commune",
+              "label": "Join the Survivor Commune",
+              "description": "[PLACEHOLDER] Community and cooperation. They believe in strength through unity."
+            },
+            {
+              "id": "lone_wolf",
+              "label": "Go It Alone",
+              "description": "[PLACEHOLDER] Trust only yourself. Freedom has a price, but it's yours to pay."
+            }
+          ]
+        },
+        "completion_requirement": {
+          "workouts": 5
+        },
+        "xp_reward": 750,
+        "credits_reward": 500
+      },
+      {
+        "id": 3,
+        "title": "The First Trial",
+        "content": "[PLACEHOLDER - Trial narrative]\n\nYour choice has been made. Now you must prove yourself worthy.",
+        "unlock_level": 10,
+        "completion_requirement": {
+          "workouts": 10
+        },
+        "xp_reward": 1000,
+        "credits_reward": 750
+      }
+    ]
+  },
+  "act2": {
+    "title": "Territory",
+    "description": "Establish your place in this new world.",
+    "chapters": []
+  },
+  "act3": {
+    "title": "The Threat",
+    "description": "Face the darkness that brought the world to its knees.",
+    "chapters": []
+  },
+  "act4": {
+    "title": "New World",
+    "description": "Shape the future of humanity.",
+    "chapters": []
+  }
+}

@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      abilities: {
+        Row: {
+          ability_type: string
+          class_type: string
+          created_at: string
+          description: string
+          effect_type: string
+          effect_value: number
+          icon_name: string
+          id: string
+          name: string
+          tier: number
+          unlock_level: number
+          unlock_workout_count: number
+        }
+        Insert: {
+          ability_type: string
+          class_type: string
+          created_at?: string
+          description: string
+          effect_type: string
+          effect_value: number
+          icon_name: string
+          id?: string
+          name: string
+          tier: number
+          unlock_level: number
+          unlock_workout_count: number
+        }
+        Update: {
+          ability_type?: string
+          class_type?: string
+          created_at?: string
+          description?: string
+          effect_type?: string
+          effect_value?: number
+          icon_name?: string
+          id?: string
+          name?: string
+          tier?: number
+          unlock_level?: number
+          unlock_workout_count?: number
+        }
+        Relationships: []
+      }
       achievements: {
         Row: {
           category: string
@@ -46,6 +91,109 @@ export type Database = {
           unlock_criteria?: Json
         }
         Relationships: []
+      }
+      characters: {
+        Row: {
+          agility: number
+          class_type: string
+          created_at: string
+          endurance: number
+          focus: number
+          id: string
+          resourcefulness: number
+          secondary_class: string | null
+          strength: number
+          survival_credits: number
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          agility?: number
+          class_type: string
+          created_at?: string
+          endurance?: number
+          focus?: number
+          id?: string
+          resourcefulness?: number
+          secondary_class?: string | null
+          strength?: number
+          survival_credits?: number
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          agility?: number
+          class_type?: string
+          created_at?: string
+          endurance?: number
+          focus?: number
+          id?: string
+          resourcefulness?: number
+          secondary_class?: string | null
+          strength?: number
+          survival_credits?: number
+          updated_at?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "characters_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      daily_quests: {
+        Row: {
+          completed: boolean
+          created_at: string
+          credits_reward: number
+          current_progress: number
+          id: string
+          quest_date: string
+          quest_type: string
+          target_value: number
+          user_id: string
+          xp_reward: number
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          credits_reward: number
+          current_progress?: number
+          id?: string
+          quest_date?: string
+          quest_type: string
+          target_value: number
+          user_id: string
+          xp_reward: number
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          credits_reward?: number
+          current_progress?: number
+          id?: string
+          quest_date?: string
+          quest_type?: string
+          target_value?: number
+          user_id?: string
+          xp_reward?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_quests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       exercises: {
         Row: {
@@ -260,6 +408,95 @@ export type Database = {
         }
         Relationships: []
       }
+      story_progress: {
+        Row: {
+          completed_chapters: Json
+          created_at: string
+          current_act: number
+          current_chapter: number
+          faction_choice: string | null
+          id: string
+          resolution_choice: string | null
+          strategy_choice: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_chapters?: Json
+          created_at?: string
+          current_act?: number
+          current_chapter?: number
+          faction_choice?: string | null
+          id?: string
+          resolution_choice?: string | null
+          strategy_choice?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_chapters?: Json
+          created_at?: string
+          current_act?: number
+          current_chapter?: number
+          faction_choice?: string | null
+          id?: string
+          resolution_choice?: string | null
+          strategy_choice?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_abilities: {
+        Row: {
+          ability_id: string
+          equipped: boolean
+          id: string
+          last_used: string | null
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          ability_id: string
+          equipped?: boolean
+          id?: string
+          last_used?: string | null
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          ability_id?: string
+          equipped?: boolean
+          id?: string
+          last_used?: string | null
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_abilities_ability_id_fkey"
+            columns: ["ability_id"]
+            isOneToOne: false
+            referencedRelation: "abilities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_abilities_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_achievements: {
         Row: {
           achievement_id: string
@@ -285,6 +522,44 @@ export type Database = {
             columns: ["achievement_id"]
             isOneToOne: false
             referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_equipment: {
+        Row: {
+          equipped: boolean
+          id: string
+          item_id: string
+          purchased_at: string
+          rarity: string
+          slot: string
+          user_id: string
+        }
+        Insert: {
+          equipped?: boolean
+          id?: string
+          item_id: string
+          purchased_at?: string
+          rarity: string
+          slot: string
+          user_id: string
+        }
+        Update: {
+          equipped?: boolean
+          id?: string
+          item_id?: string
+          purchased_at?: string
+          rarity?: string
+          slot?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_equipment_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -548,6 +823,32 @@ export type Database = {
       }
     }
     Functions: {
+      calculate_level_from_xp: {
+        Args: { p_xp: number }
+        Returns: number
+      }
+      get_total_workout_count: {
+        Args: { p_user_id: string }
+        Returns: number
+      }
+      get_workout_type_counts: {
+        Args: { p_user_id: string }
+        Returns: {
+          category: string
+          count: number
+        }[]
+      }
+      increment_character_stats: {
+        Args: {
+          p_agility?: number
+          p_endurance?: number
+          p_focus?: number
+          p_resourcefulness?: number
+          p_strength?: number
+          p_user_id: string
+        }
+        Returns: undefined
+      }
       update_user_streak: {
         Args: { p_user_id: string; p_workout_date: string }
         Returns: undefined

@@ -1,0 +1,100 @@
+{
+  "items": [
+    {
+      "id": "common_vest_1",
+      "name": "Worn Leather Vest",
+      "slot": "chest",
+      "rarity": "common",
+      "cost": 100,
+      "visual_variant": "vest_brown"
+    },
+    {
+      "id": "common_gloves_1",
+      "name": "Tattered Gloves",
+      "slot": "gloves",
+      "rarity": "common",
+      "cost": 50,
+      "visual_variant": "gloves_basic"
+    },
+    {
+      "id": "common_boots_1",
+      "name": "Scuffed Boots",
+      "slot": "boots",
+      "rarity": "common",
+      "cost": 75,
+      "visual_variant": "boots_basic"
+    },
+    {
+      "id": "uncommon_helmet_1",
+      "name": "Salvaged Helmet",
+      "slot": "helmet",
+      "rarity": "uncommon",
+      "cost": 600,
+      "visual_variant": "helmet_salvaged"
+    },
+    {
+      "id": "uncommon_chest_1",
+      "name": "Reinforced Vest",
+      "slot": "chest",
+      "rarity": "uncommon",
+      "cost": 800,
+      "visual_variant": "vest_reinforced"
+    },
+    {
+      "id": "rare_weapon_1",
+      "name": "Composite Bow",
+      "slot": "weapon_primary",
+      "rarity": "rare",
+      "cost": 2500,
+      "visual_variant": "bow_composite"
+    },
+    {
+      "id": "rare_weapon_2",
+      "name": "Tactical Axe",
+      "slot": "weapon_primary",
+      "rarity": "rare",
+      "cost": 2700,
+      "visual_variant": "axe_tactical"
+    },
+    {
+      "id": "rare_chest_1",
+      "name": "Combat Armor",
+      "slot": "chest",
+      "rarity": "rare",
+      "cost": 3000,
+      "visual_variant": "armor_combat"
+    },
+    {
+      "id": "epic_helmet_1",
+      "name": "Advanced Helm",
+      "slot": "helmet",
+      "rarity": "epic",
+      "cost": 4500,
+      "visual_variant": "helm_advanced"
+    },
+    {
+      "id": "epic_weapon_1",
+      "name": "Plasma Blade",
+      "slot": "weapon_primary",
+      "rarity": "epic",
+      "cost": 5000,
+      "visual_variant": "blade_plasma"
+    },
+    {
+      "id": "legendary_chest_1",
+      "name": "Titan's Plate",
+      "slot": "chest",
+      "rarity": "legendary",
+      "cost": 8000,
+      "visual_variant": "plate_titan"
+    },
+    {
+      "id": "legendary_weapon_1",
+      "name": "Flamekeeper's Edge",
+      "slot": "weapon_primary",
+      "rarity": "legendary",
+      "cost": 10000,
+      "visual_variant": "edge_flamekeeper"
+    }
+  ]
+}
