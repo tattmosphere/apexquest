@@ -17,7 +17,10 @@ import { LogPastWorkoutDialog } from "@/components/LogPastWorkoutDialog";
 import { CharacterCreationDialog } from "@/components/CharacterCreationDialog";
 import { DailyQuestsCard } from "@/components/DailyQuestsCard";
 import { AbilityTreeDialog } from "@/components/AbilityTreeDialog";
+import { StoryModeDialog } from "@/components/StoryModeDialog";
+import { ShopDialog } from "@/components/ShopDialog";
 import { useCharacter } from "@/hooks/useCharacter";
+import { useDailyQuests } from "@/hooks/useDailyQuests";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
@@ -34,7 +37,9 @@ import {
   Settings,
   Plus,
   Play,
-  History
+  History,
+  BookOpen,
+  ShoppingBag
 } from "lucide-react";
 import heroImage from "@/assets/hero-avatars.jpg";
 
@@ -74,6 +79,12 @@ const Index = () => {
   const [editWorkoutId, setEditWorkoutId] = useState<string | null>(null);
   const [showQuickWorkout, setShowQuickWorkout] = useState(false);
   const [showLogPast, setShowLogPast] = useState(false);
+  const [showCharacterCreation, setShowCharacterCreation] = useState(false);
+  const [showAbilities, setShowAbilities] = useState(false);
+  const [showStory, setShowStory] = useState(false);
+  const [showShop, setShowShop] = useState(false);
+  const { character } = useCharacter();
+  const { quests } = useDailyQuests();
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -85,6 +96,12 @@ const Index = () => {
       loadData();
     }
   }, [user, authLoading, navigate]);
+
+  useEffect(() => {
+    if (profile && !character) {
+      setShowCharacterCreation(true);
+    }
+  }, [profile, character]);
 
   const loadData = async () => {
     if (!user) return;
@@ -327,11 +344,64 @@ const Index = () => {
 
       {/* Main Dashboard */}
       <section className="container mx-auto px-4 py-12 space-y-8">
-        {/* Streak and Avatar */}
-        <div className="grid md:grid-cols-2 gap-6 animate-fade-in">
-          <StreakCounter streakDays={profile.current_streak} />
+        {/* Streak, Avatar, and Quests */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+          <div className="space-y-6">
+            <StreakCounter streakDays={profile.current_streak} />
+            {character && <DailyQuestsCard />}
+          </div>
           <AvatarDisplay level={profile.level} totalPoints={profile.total_points} />
         </div>
+
+        {/* RPG Features */}
+        {character && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in">
+            <Card 
+              className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-gradient-card"
+              onClick={() => setShowAbilities(true)}
+            >
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-primary/10 rounded-lg">
+                  <Zap className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Abilities</h3>
+                  <p className="text-sm text-muted-foreground">View skill tree</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card 
+              className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-gradient-card"
+              onClick={() => setShowStory(true)}
+            >
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-accent/10 rounded-lg">
+                  <BookOpen className="h-6 w-6 text-accent" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Story Mode</h3>
+                  <p className="text-sm text-muted-foreground">Continue journey</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card 
+              className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-gradient-card"
+              onClick={() => setShowShop(true)}
+            >
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-secondary/10 rounded-lg">
+                  <ShoppingBag className="h-6 w-6 text-secondary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Shop</h3>
+                  <p className="text-sm text-muted-foreground">{character.survival_credits} SC</p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        )}
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in">
@@ -502,6 +572,30 @@ const Index = () => {
         userId={user.id}
         userWeight={profile.body_weight_lbs || 150}
         onWorkoutLogged={loadData}
+      />
+
+      <CharacterCreationDialog 
+        open={showCharacterCreation}
+        onOpenChange={setShowCharacterCreation}
+        onCharacterCreated={() => {
+          setShowCharacterCreation(false);
+          loadData();
+        }}
+      />
+      
+      <AbilityTreeDialog 
+        open={showAbilities}
+        onOpenChange={setShowAbilities}
+      />
+      
+      <StoryModeDialog 
+        open={showStory}
+        onOpenChange={setShowStory}
+      />
+      
+      <ShopDialog 
+        open={showShop}
+        onOpenChange={setShowShop}
       />
     </div>
   );

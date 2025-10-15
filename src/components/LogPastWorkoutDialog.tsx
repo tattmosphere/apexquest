@@ -10,6 +10,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { useXP } from "@/hooks/useXP";
+import { useAbilities } from "@/hooks/useAbilities";
+import { useDailyQuests } from "@/hooks/useDailyQuests";
 
 interface LogPastWorkoutDialogProps {
   open: boolean;
@@ -27,6 +30,9 @@ interface Exercise {
 }
 
 export const LogPastWorkoutDialog = ({ open, onOpenChange, userId, userWeight, onWorkoutLogged }: LogPastWorkoutDialogProps) => {
+  const { awardWorkoutXP, updateCharacterStats } = useXP();
+  const { checkAbilityUnlocks } = useAbilities();
+  const { updateQuestProgress } = useDailyQuests();
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [selectedExercise, setSelectedExercise] = useState<string>("");
   const [date, setDate] = useState<Date>(new Date());
@@ -131,6 +137,29 @@ export const LogPastWorkoutDialog = ({ open, onOpenChange, userId, userWeight, o
       await supabase.rpc('update_user_streak', {
         p_user_id: userId,
         p_workout_date: workoutDate,
+      });
+
+      // RPG HOOKS
+      const selectedEx = exercises.find(e => e.id === selectedExercise);
+      const category = selectedEx?.category || 'cardio';
+
+      await awardWorkoutXP(userId, {
+        duration_minutes: durationMinutes,
+        category,
+        exercises: [{ category, primary_muscle_group: 'cardiovascular' }]
+      });
+
+      await updateCharacterStats(userId, {
+        category,
+        exercises: [{ category, primary_muscle_group: 'cardiovascular', name: selectedEx?.name || '' }]
+      });
+
+      await checkAbilityUnlocks(userId);
+
+      await updateQuestProgress(userId, {
+        category,
+        duration_minutes: durationMinutes,
+        beatPR: false
       });
 
       toast({

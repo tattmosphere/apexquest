@@ -5,6 +5,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Play, Pause, Square } from "lucide-react";
+import { useXP } from "@/hooks/useXP";
+import { useAbilities } from "@/hooks/useAbilities";
+import { useDailyQuests } from "@/hooks/useDailyQuests";
+import { WorkoutCompletionModal } from "@/components/WorkoutCompletionModal";
 
 interface QuickWorkoutDialogProps {
   open: boolean;
@@ -21,11 +25,16 @@ interface Exercise {
 }
 
 export const QuickWorkoutDialog = ({ open, onOpenChange, userId, userWeight, onWorkoutComplete }: QuickWorkoutDialogProps) => {
+  const { awardWorkoutXP, updateCharacterStats } = useXP();
+  const { checkAbilityUnlocks } = useAbilities();
+  const { updateQuestProgress } = useDailyQuests();
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [selectedExercise, setSelectedExercise] = useState<string>("");
   const [isRunning, setIsRunning] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [completionData, setCompletionData] = useState<any>(null);
 
   useEffect(() => {
     loadCardioExercises();
@@ -166,21 +175,65 @@ export const QuickWorkoutDialog = ({ open, onOpenChange, userId, userWeight, onW
       p_workout_date: new Date().toISOString().split('T')[0],
     });
 
-    toast({
-      title: "Workout completed!",
-      description: `${Math.round(durationMinutes)} minutes, ${Math.round(calorieData.calories_burned)} calories burned`,
+    // RPG HOOKS
+    const xpResult = await awardWorkoutXP(userId, {
+      duration_minutes: durationMinutes,
+      category: 'cardio',
+      exercises: [{ category: 'cardio', primary_muscle_group: 'cardiovascular' }]
     });
 
-    // Reset and close
+    await updateCharacterStats(userId, {
+      category: 'cardio',
+      exercises: [{ category: 'cardio', primary_muscle_group: 'cardiovascular', name: exercises.find(e => e.id === selectedExercise)?.name || '' }]
+    });
+
+    const newAbilities = await checkAbilityUnlocks(userId);
+
+    await updateQuestProgress(userId, {
+      category: 'cardio',
+      duration_minutes: durationMinutes,
+      beatPR: false
+    });
+
+    // Show completion modal
+    setCompletionData({
+      xpGained: xpResult.xpGained,
+      newLevel: xpResult.newLevel,
+      leveledUp: xpResult.leveledUp,
+      newAbilities,
+      statsGained: {
+        agility: 3,
+        endurance: 2,
+      },
+      creditsGained: 50
+    });
+    setShowCompletionModal(true);
+
+    // Reset
     setElapsedSeconds(0);
     setSessionId(null);
     setSelectedExercise("");
-    onWorkoutComplete();
-    onOpenChange(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <>
+      <WorkoutCompletionModal
+        open={showCompletionModal}
+        onOpenChange={(open) => {
+          setShowCompletionModal(open);
+          if (!open) {
+            onWorkoutComplete();
+            onOpenChange(false);
+          }
+        }}
+        xpGained={completionData?.xpGained || 0}
+        statsGained={completionData?.statsGained || {}}
+        newLevel={completionData?.newLevel}
+        leveledUp={completionData?.leveledUp || false}
+        newAbilities={completionData?.newAbilities || []}
+        creditsGained={completionData?.creditsGained}
+      />
+      <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Quick Workout</DialogTitle>
@@ -244,5 +297,6 @@ export const QuickWorkoutDialog = ({ open, onOpenChange, userId, userWeight, onW
         </div>
       </DialogContent>
     </Dialog>
+    </>
   );
 };

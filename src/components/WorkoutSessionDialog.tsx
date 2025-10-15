@@ -9,6 +9,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Check, Plus, Minus, Dumbbell, Edit, X, Trash2 } from "lucide-react";
+import { useXP } from "@/hooks/useXP";
+import { useAbilities } from "@/hooks/useAbilities";
+import { useDailyQuests } from "@/hooks/useDailyQuests";
+import { WorkoutCompletionModal } from "@/components/WorkoutCompletionModal";
 
 interface Exercise {
   id: string;
@@ -49,6 +53,9 @@ interface WorkoutSessionDialogProps {
 export const WorkoutSessionDialog = ({ open, onClose, workoutId, workoutTitle }: WorkoutSessionDialogProps) => {
   const { user } = useAuth();
   const { profile } = useProfile();
+  const { awardWorkoutXP, updateCharacterStats } = useXP();
+  const { checkAbilityUnlocks } = useAbilities();
+  const { updateQuestProgress } = useDailyQuests();
   const [workoutExercises, setWorkoutExercises] = useState<WorkoutExercise[]>([]);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [sessionExercises, setSessionExercises] = useState<SessionExercise[]>([]);
@@ -57,6 +64,8 @@ export const WorkoutSessionDialog = ({ open, onClose, workoutId, workoutTitle }:
   const [editMode, setEditMode] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [availableExercises, setAvailableExercises] = useState<Exercise[]>([]);
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [completionData, setCompletionData] = useState<any>(null);
 
   useEffect(() => {
     if (open && user && workoutId) {
@@ -256,12 +265,12 @@ export const WorkoutSessionDialog = ({ open, onClose, workoutId, workoutTitle }:
         .update({ completed_at: new Date().toISOString(), notes })
         .eq("id", sessionId);
 
-      // Log workout
-      const totalDuration = Math.floor((Date.now() - new Date().getTime()) / 60000);
+      // Log workout - calculate duration
+      const workoutDuration = Math.floor((Date.now() - new Date().getTime()) / 60000) || 30;
       await supabase.from("workout_logs").insert({
         user_id: user!.id,
         workout_id: workoutId,
-        duration_minutes: totalDuration || 30,
+        duration_minutes: workoutDuration,
         notes,
       });
 
@@ -271,9 +280,50 @@ export const WorkoutSessionDialog = ({ open, onClose, workoutId, workoutTitle }:
         p_workout_date: new Date().toISOString().split("T")[0],
       });
 
+      // RPG HOOKS: Award XP and update stats
+      const exerciseCategory = workoutExercises[0]?.exercises?.category || 'strength';
+      
+      const xpResult = await awardWorkoutXP(user!.id, {
+        duration_minutes: workoutDuration,
+        category: exerciseCategory,
+        exercises: sessionExercises.map(ex => ({
+          category: workoutExercises.find(w => w.exercise_id === ex.exercise_id)?.exercises?.category || '',
+          primary_muscle_group: workoutExercises.find(w => w.exercise_id === ex.exercise_id)?.exercises?.muscle_groups?.[0] || ''
+        }))
+      });
+
+      await updateCharacterStats(user!.id, {
+        category: exerciseCategory,
+        exercises: sessionExercises.map(ex => ({
+          category: workoutExercises.find(w => w.exercise_id === ex.exercise_id)?.exercises?.category || '',
+          primary_muscle_group: workoutExercises.find(w => w.exercise_id === ex.exercise_id)?.exercises?.muscle_groups?.[0] || '',
+          name: workoutExercises.find(w => w.exercise_id === ex.exercise_id)?.exercises?.name || ''
+        }))
+      });
+
+      const newAbilities = await checkAbilityUnlocks(user!.id);
+
+      await updateQuestProgress(user!.id, {
+        category: exerciseCategory,
+        duration_minutes: workoutDuration,
+        beatPR: false
+      });
+
+      // Show completion modal
+      setCompletionData({
+        xpGained: xpResult.xpGained,
+        newLevel: xpResult.newLevel,
+        leveledUp: xpResult.leveledUp,
+        newAbilities,
+        statsGained: {
+          strength: exerciseCategory === 'strength' ? sessionExercises.length * 3 : 0,
+          agility: exerciseCategory === 'cardio' ? sessionExercises.length * 3 : 0,
+          endurance: sessionExercises.length,
+        }
+      });
+      setShowCompletionModal(true);
+
       toast.success("Workout completed! 🎉");
-      onClose();
-      window.location.reload(); // Refresh to update stats
     } catch (error: any) {
       console.error("Error finishing workout:", error);
       toast.error("Failed to save workout");
@@ -283,7 +333,23 @@ export const WorkoutSessionDialog = ({ open, onClose, workoutId, workoutTitle }:
   const unitLabel = (profile as any)?.preferred_units || 'lbs';
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <>
+      <WorkoutCompletionModal
+        open={showCompletionModal}
+        onOpenChange={(open) => {
+          setShowCompletionModal(open);
+          if (!open) {
+            onClose();
+            window.location.reload();
+          }
+        }}
+        xpGained={completionData?.xpGained || 0}
+        statsGained={completionData?.statsGained || {}}
+        newLevel={completionData?.newLevel}
+        leveledUp={completionData?.leveledUp || false}
+        newAbilities={completionData?.newAbilities || []}
+      />
+      <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">
@@ -473,5 +539,6 @@ export const WorkoutSessionDialog = ({ open, onClose, workoutId, workoutTitle }:
         )}
       </DialogContent>
     </Dialog>
+    </>
   );
 };
