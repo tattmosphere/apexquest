@@ -3,12 +3,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Swords, Target } from "lucide-react";
 import { useState } from "react";
-import { getChapter } from "@/data/storyChapters";
+import { getChapter, getRequirementForClass } from "@/data/storyChapters";
 
 interface StoryProgressCardProps {
   currentChapter: number;
   chapterProgress: number; // 0-100
   onViewStory: () => void;
+  userClass?: string; // 'warrior', 'rogue', or 'mage'
 }
 
 
@@ -16,7 +17,8 @@ interface StoryProgressCardProps {
 export const StoryProgressCard = ({ 
   currentChapter, 
   chapterProgress,
-  onViewStory 
+  onViewStory,
+  userClass = 'warrior' // Default to warrior
 }: StoryProgressCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
   
@@ -96,7 +98,7 @@ export const StoryProgressCard = ({
             <div className="flex-1">
               <p className="text-xs text-muted-foreground">Next Chapter</p>
               <p className="font-semibold text-sm text-card-foreground">
-                {nextChapter.requirement}
+                {getRequirementForClass(nextChapter.requirement, userClass)}
               </p>
             </div>
           </div>
@@ -108,7 +110,7 @@ export const StoryProgressCard = ({
             <div className="flex-1">
               <p className="text-xs text-muted-foreground">To Complete</p>
               <p className="font-semibold text-sm text-card-foreground">
-                {chapter.requirement}
+                {getRequirementForClass(chapter.requirement, userClass)}
               </p>
             </div>
           </div>
@@ -131,7 +133,7 @@ export const StoryProgressCard = ({
             </p>
             <div className="flex items-center gap-2 text-xs text-accent">
               <Target className="h-3 w-3" />
-              <span>{nextChapter.requirement}</span>
+              <span>{getRequirementForClass(nextChapter.requirement, userClass)}</span>
             </div>
           </div>
         )}

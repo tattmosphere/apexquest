@@ -1,10 +1,33 @@
 import { StoryCard } from "@/components/StoryCardViewer";
 
+export type ChapterRequirementType = 
+  | "workout_count"
+  | "strength_progression"
+  | "cardio_distance"
+  | "cardio_time"
+  | "endurance_hold"
+  | "streak_days"
+  | "total_volume"
+  | "specific_exercise";
+
+export interface ChapterRequirement {
+  type: ChapterRequirementType;
+  description: string;
+  // Class-specific variants
+  warrior?: string;  // For strength-focused users
+  rogue?: string;    // For cardio/agility-focused users
+  mage?: string;     // For flexibility/endurance-focused users
+  // Tracking data
+  target?: number;
+  exercise?: string;
+  metric?: string;
+}
+
 export interface ChapterData {
   id: number;
   title: string;
   act: string;
-  requirement: string;
+  requirement: ChapterRequirement;
   boss: string | null;
   preview: string;
   cards: StoryCard[];
@@ -15,7 +38,14 @@ export const STORY_CHAPTERS: ChapterData[] = [
     id: 1,
     title: "The Bunker",
     act: "Act 1: Awakening",
-    requirement: "Complete 1 workout",
+    requirement: {
+      type: "workout_count",
+      description: "Complete your first workout",
+      warrior: "Complete 1 strength training session",
+      rogue: "Complete 1 cardio session",
+      mage: "Complete 1 flexibility or yoga session",
+      target: 1
+    },
     boss: null,
     preview: "You wake in darkness. The world has ended. It's time to survive.",
     cards: [
@@ -60,7 +90,14 @@ export const STORY_CHAPTERS: ChapterData[] = [
     id: 2,
     title: "First Light",
     act: "Act 1: Awakening",
-    requirement: "Complete 1 workout",
+    requirement: {
+      type: "streak_days",
+      description: "Maintain a 3-day workout streak",
+      warrior: "Complete strength workouts 3 days in a row",
+      rogue: "Complete cardio sessions 3 days in a row",
+      mage: "Complete flexibility workouts 3 days in a row",
+      target: 3
+    },
     boss: null,
     preview: "The surface awaits. You're not alone in the wasteland.",
     cards: [
@@ -81,7 +118,15 @@ export const STORY_CHAPTERS: ChapterData[] = [
     id: 3,
     title: "The Raider Camp",
     act: "Act 1: Awakening",
-    requirement: "Complete 2 strength workouts",
+    requirement: {
+      type: "strength_progression",
+      description: "Show strength progression",
+      warrior: "Increase weight on any compound lift by 10 lbs",
+      rogue: "Complete 50 burpees in one session",
+      mage: "Hold plank position for 2 minutes",
+      target: 10,
+      metric: "lbs"
+    },
     boss: "Ironjaw (Raider Leader)",
     preview: "Raiders control the supply depot. You'll need strength to take them on.",
     cards: [
@@ -102,7 +147,15 @@ export const STORY_CHAPTERS: ChapterData[] = [
     id: 4,
     title: "The Safe Haven",
     act: "Act 1: Awakening",
-    requirement: "Complete 1 cardio workout",
+    requirement: {
+      type: "cardio_distance",
+      description: "Build endurance for the journey",
+      warrior: "Complete a 2-mile run or walk",
+      rogue: "Complete a 5k run under 35 minutes",
+      mage: "Walk 15,000 steps in one day",
+      target: 5,
+      metric: "km"
+    },
     boss: null,
     preview: "Raven leads you to a survivor settlement. But can they be trusted?",
     cards: [
@@ -123,7 +176,14 @@ export const STORY_CHAPTERS: ChapterData[] = [
     id: 5,
     title: "The Horde",
     act: "Act 2: Rising Threat",
-    requirement: "Complete 3 workouts (any type)",
+    requirement: {
+      type: "total_volume",
+      description: "Prepare for the ultimate battle",
+      warrior: "Complete 5 strength workouts with progressive overload",
+      rogue: "Run a total of 15 miles across multiple sessions",
+      mage: "Complete 300 minutes of yoga/flexibility training",
+      target: 5
+    },
     boss: "Bloater (Mutant Boss)",
     preview: "A massive horde approaches the settlement. Prepare for battle.",
     cards: [
@@ -144,5 +204,21 @@ export const STORY_CHAPTERS: ChapterData[] = [
 
 export const getChapter = (chapterId: number): ChapterData | undefined => {
   return STORY_CHAPTERS.find(chapter => chapter.id === chapterId);
+};
+
+// Helper function to get requirement text based on user's class
+export const getRequirementForClass = (requirement: ChapterRequirement, userClass: string): string => {
+  const classLower = userClass.toLowerCase();
+  
+  if (classLower === 'warrior' && requirement.warrior) {
+    return requirement.warrior;
+  } else if (classLower === 'rogue' && requirement.rogue) {
+    return requirement.rogue;
+  } else if (classLower === 'mage' && requirement.mage) {
+    return requirement.mage;
+  }
+  
+  // Fallback to generic description
+  return requirement.description;
 };
 

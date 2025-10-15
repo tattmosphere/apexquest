@@ -388,6 +388,7 @@ const Index = () => {
               <StoryProgressCard
                 currentChapter={currentStoryChapter}
                 chapterProgress={100}
+                userClass={character.class}
                 onViewStory={() => {
                   setShowStoryCards(true);
                 }}
