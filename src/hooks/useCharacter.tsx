@@ -42,7 +42,7 @@ export const useCharacter = () => {
       if (error && error.code !== 'PGRST116') {
         console.error("Error fetching character:", error);
       } else {
-        setCharacter(data);
+        setCharacter(data as Character);
       }
       setLoading(false);
     };

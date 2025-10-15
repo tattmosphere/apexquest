@@ -95,6 +95,8 @@ export type Database = {
       characters: {
         Row: {
           agility: number
+          avatar_gender: string
+          avatar_skin_tone: string
           class_type: string
           created_at: string
           endurance: number
@@ -110,6 +112,8 @@ export type Database = {
         }
         Insert: {
           agility?: number
+          avatar_gender?: string
+          avatar_skin_tone?: string
           class_type: string
           created_at?: string
           endurance?: number
@@ -125,6 +129,8 @@ export type Database = {
         }
         Update: {
           agility?: number
+          avatar_gender?: string
+          avatar_skin_tone?: string
           class_type?: string
           created_at?: string
           endurance?: number
