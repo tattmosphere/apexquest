@@ -1,0 +1,322 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "name": "Chapter 2 Story Scenes",
+      "status": "pending",
+      "scheduled_date": "2025-10-16",
+      "type": "story_illustrations",
+      "chapter": 2,
+      "count": 4,
+      "description": "Generate 4 story scenes for Chapter 2: First Light",
+      "scenes": [
+        {
+          "filename": "scene1.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Character emerging from underground bunker hatch, shielding eyes from harsh sunlight, desolate wasteland vista stretching endlessly, cracked earth, rusted vehicles, dramatic lighting, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene2.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Wide shot of endless wasteland with cracked earth, rusted car husks scattered, distant ruined city skyline, blood-red sun in hazy sky, desolate atmosphere, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene3.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Close-up of fresh footprints in dusty ground, distant smoke column rising on horizon, sense of hope mixed with danger, warm lighting, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene4.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Silhouette of another survivor standing in distance, tense moment of uncertainty, dust and haze, dramatic backlighting, RPG game art style, landscape orientation"
+        }
+      ],
+      "output_dir": "/home/ubuntu/apexquest/public/story/chapter2",
+      "data_update": "Add Chapter 2 cards to storyChapters.ts"
+    },
+    {
+      "id": 2,
+      "name": "Warrior Starter Equipment",
+      "status": "pending",
+      "scheduled_date": "2025-10-17",
+      "type": "equipment_items",
+      "count": 10,
+      "description": "Generate 10 warrior starter equipment items",
+      "items": [
+        {
+          "filename": "makeshift_pipe.png",
+          "name": "Makeshift Pipe",
+          "prompt": "RPG item icon: Rusty metal pipe weapon, worn texture, basic melee weapon, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "leather_wraps.png",
+          "name": "Leather Wraps",
+          "prompt": "RPG item icon: Worn leather hand wraps for grip, frayed edges, basic armor, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "scrap_metal_gauntlets.png",
+          "name": "Scrap Metal Gauntlets",
+          "prompt": "RPG item icon: Crude gauntlets made from repurposed car parts, bolted together, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "reinforced_boots.png",
+          "name": "Reinforced Boots",
+          "prompt": "RPG item icon: Heavy combat boots with metal toe caps, worn leather, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "raiders_axe.png",
+          "name": "Raider's Axe",
+          "prompt": "RPG item icon: Crude but effective one-handed axe, wrapped handle, chipped blade, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "ironjaws_pauldron.png",
+          "name": "Ironjaw's Pauldron",
+          "prompt": "RPG item icon: Spiked shoulder armor piece, metal plates, intimidating design, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "wasteland_dumbbell.png",
+          "name": "Wasteland Dumbbell",
+          "prompt": "RPG item icon: Makeshift weights made from scrap metal and concrete, training equipment, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "protein_ration.png",
+          "name": "Protein Ration",
+          "prompt": "RPG item icon: Preserved pre-war protein bar in weathered packaging, survival food, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "stimpack.png",
+          "name": "Stimpack",
+          "prompt": "RPG item icon: Medical syringe with glowing green liquid, healing item, sci-fi medical tech, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "warriors_bandana.png",
+          "name": "Warrior's Bandana",
+          "prompt": "RPG item icon: Red cloth headband, worn fabric, warrior symbol, cosmetic item, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        }
+      ],
+      "output_dir": "/home/ubuntu/apexquest/public/equipment",
+      "data_update": "Create equipment.ts with item definitions"
+    },
+    {
+      "id": 3,
+      "name": "Early Achievement Badges",
+      "status": "pending",
+      "scheduled_date": "2025-10-18",
+      "type": "achievement_badges",
+      "count": 10,
+      "description": "Generate 10 early progression achievement badges",
+      "items": [
+        {
+          "filename": "first_steps.png",
+          "name": "First Steps",
+          "prompt": "Achievement badge: Footprints in wasteland dust, octagonal bronze frame, metallic finish, 256x256px, post-apocalyptic theme"
+        },
+        {
+          "filename": "awakened.png",
+          "name": "Awakened",
+          "prompt": "Achievement badge: Rising sun over horizon, octagonal bronze frame, metallic finish, 256x256px, post-apocalyptic theme"
+        },
+        {
+          "filename": "streak_starter.png",
+          "name": "Streak Starter",
+          "prompt": "Achievement badge: Flame icon with number 3, octagonal bronze frame, metallic finish, 256x256px, post-apocalyptic theme"
+        },
+        {
+          "filename": "iron_will.png",
+          "name": "Iron Will",
+          "prompt": "Achievement badge: Flexed bicep with metal texture, octagonal silver frame, metallic finish, 256x256px, post-apocalyptic theme"
+        },
+        {
+          "filename": "cardio_survivor.png",
+          "name": "Cardio Survivor",
+          "prompt": "Achievement badge: Running figure silhouette, octagonal bronze frame, metallic finish, 256x256px, post-apocalyptic theme"
+        },
+        {
+          "filename": "flexible_fighter.png",
+          "name": "Flexible Fighter",
+          "prompt": "Achievement badge: Yoga pose silhouette, octagonal bronze frame, metallic finish, 256x256px, post-apocalyptic theme"
+        },
+        {
+          "filename": "early_riser.png",
+          "name": "Early Riser",
+          "prompt": "Achievement badge: Sunrise with dumbbell icon, octagonal bronze frame, metallic finish, 256x256px, post-apocalyptic theme"
+        },
+        {
+          "filename": "night_owl.png",
+          "name": "Night Owl",
+          "prompt": "Achievement badge: Moon with barbell icon, octagonal bronze frame, metallic finish, 256x256px, post-apocalyptic theme"
+        },
+        {
+          "filename": "raider_slayer.png",
+          "name": "Raider Slayer",
+          "prompt": "Achievement badge: Broken raider mask, octagonal silver frame, metallic finish, 256x256px, post-apocalyptic theme"
+        },
+        {
+          "filename": "wasteland_warrior.png",
+          "name": "Wasteland Warrior",
+          "prompt": "Achievement badge: Shield with Roman numeral V emblem, octagonal gold frame, metallic finish, 256x256px, post-apocalyptic theme"
+        }
+      ],
+      "output_dir": "/home/ubuntu/apexquest/public/achievements",
+      "data_update": "Update achievement definitions in database"
+    },
+    {
+      "id": 4,
+      "name": "Chapter 3 Boss Battle Scenes",
+      "status": "pending",
+      "scheduled_date": "2025-10-19",
+      "type": "story_illustrations",
+      "chapter": 3,
+      "count": 5,
+      "description": "Generate 5 story scenes for Chapter 3 including Ironjaw boss fight",
+      "scenes": [
+        {
+          "filename": "scene1.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Raider camp with makeshift scrap metal walls, smoke rising, armed guards, threatening atmosphere, dramatic lighting, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene2.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Massive muscular raider leader Ironjaw with metal jaw prosthetic, spiked shoulder armor, intimidating pose, detailed character portrait, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene3.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Circle of raiders watching, protagonist facing Ironjaw boss, tense standoff moment before battle, dramatic lighting, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene4.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Dynamic action shot of boss battle mid-combat, dust and debris flying, intense struggle, motion blur, dramatic lighting, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene5.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Ironjaw defeated on ground, protagonist standing victorious, raiders watching in respect, sunset lighting, RPG game art style, landscape orientation"
+        }
+      ],
+      "output_dir": "/home/ubuntu/apexquest/public/story/chapter3",
+      "data_update": "Add Chapter 3 cards to storyChapters.ts with boss battle flags"
+    },
+    {
+      "id": 5,
+      "name": "Chapter 4 Safe Haven Scenes",
+      "status": "pending",
+      "scheduled_date": "2025-10-20",
+      "type": "story_illustrations",
+      "chapter": 4,
+      "count": 4,
+      "description": "Generate 4 story scenes for Chapter 4: The Safe Haven",
+      "scenes": [
+        {
+          "filename": "scene1.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Character walking across wasteland at sunset, long shadows, determined expression, journey scene, dramatic lighting, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene2.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Fortified settlement in distance, high walls made of shipping containers, watchtowers, sense of hope, warm lighting, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene3.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Massive reinforced entrance gates, guards on watchtowers, other survivors waiting to enter, anticipation, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene4.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Bustling community inside haven, market stalls, people working together, small gardens growing, civilization rebuilding, warm hopeful lighting, RPG game art style, landscape orientation"
+        }
+      ],
+      "output_dir": "/home/ubuntu/apexquest/public/story/chapter4",
+      "data_update": "Add Chapter 4 cards to storyChapters.ts"
+    },
+    {
+      "id": 6,
+      "name": "Mid-Tier Warrior Equipment",
+      "status": "pending",
+      "scheduled_date": "2025-10-21",
+      "type": "equipment_items",
+      "count": 10,
+      "description": "Generate 10 mid-tier warrior equipment items",
+      "items": [
+        {
+          "filename": "scavengers_sledgehammer.png",
+          "name": "Scavenger's Sledgehammer",
+          "prompt": "RPG item icon: Heavy two-handed sledgehammer, wrapped handle, battle-worn, uncommon rarity, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "reinforced_plate_armor.png",
+          "name": "Reinforced Plate Armor",
+          "prompt": "RPG item icon: Chest armor made from repurposed metal plates, bolted construction, uncommon rarity, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "tactical_gloves.png",
+          "name": "Tactical Gloves",
+          "prompt": "RPG item icon: Pre-war military gloves, fingerless design, reinforced knuckles, rare rarity, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "combat_knife.png",
+          "name": "Combat Knife",
+          "prompt": "RPG item icon: Military-grade survival knife with serrated edge, tactical design, rare rarity, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "wasteland_shield.png",
+          "name": "Wasteland Shield",
+          "prompt": "RPG item icon: Round shield made from car hood, painted emblem, battle damage, uncommon rarity, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "power_gauntlet.png",
+          "name": "Power Gauntlet",
+          "prompt": "RPG item icon: Mechanical fist enhancer with crude hydraulics, sci-fi tech, rare rarity, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "survivors_helm.png",
+          "name": "Survivor's Helm",
+          "prompt": "RPG item icon: Welded metal helmet with face guard, protective gear, uncommon rarity, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "barbell_of_strength.png",
+          "name": "Barbell of Strength",
+          "prompt": "RPG item icon: Proper gym barbell salvaged from old facility, training equipment, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "energy_drink.png",
+          "name": "Energy Drink",
+          "prompt": "RPG item icon: Pre-war sports drink can with glowing blue liquid, consumable item, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        },
+        {
+          "filename": "warriors_war_paint.png",
+          "name": "Warrior's War Paint",
+          "prompt": "RPG item icon: Face paint kit with tribal patterns, cosmetic item, 512x512px, transparent background, dramatic side lighting, post-apocalyptic style"
+        }
+      ],
+      "output_dir": "/home/ubuntu/apexquest/public/equipment",
+      "data_update": "Update equipment.ts with mid-tier items"
+    },
+    {
+      "id": 7,
+      "name": "Chapter 5 Horde Battle Scenes",
+      "status": "pending",
+      "scheduled_date": "2025-10-22",
+      "type": "story_illustrations",
+      "chapter": 5,
+      "count": 5,
+      "description": "Generate 5 story scenes for Chapter 5 including Bloater boss fight",
+      "scenes": [
+        {
+          "filename": "scene1.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Scouts reporting to settlement, worried faces, distant shambling figures approaching on horizon, tense atmosphere, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene2.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Massive wave of infected mutants across wasteland, dust clouds, terrifying scale, horror elements, dramatic lighting, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene3.png",
+          "prompt": "Cinematic post-apocalyptic illustration: The Bloater boss - massive grotesque creature with bloated body, toxic green glow, intimidating and horrifying, detailed monster design, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene4.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Epic battle scene with protagonist fighting alongside haven defenders, chaos and action, multiple combatants, dramatic lighting, RPG game art style, landscape orientation"
+        },
+        {
+          "filename": "scene5.png",
+          "prompt": "Cinematic post-apocalyptic illustration: Bloater defeated, exhausted survivors celebrating, haven saved in background, sunset lighting, sense of hard-won victory, RPG game art style, landscape orientation"
+        }
+      ],
+      "output_dir": "/home/ubuntu/apexquest/public/story/chapter5",
+      "data_update": "Add Chapter 5 cards to storyChapters.ts with major boss battle flags"
+    }
+  ]
+}
+
