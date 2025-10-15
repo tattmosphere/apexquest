@@ -39,9 +39,9 @@ All colors MUST be HSL.
     
     /* Semantic Mappings */
     --background: 33 20% 25%;
-    --foreground: 210 29% 24%;
+    --foreground: 33 57% 89%;
     --card: 33 53% 70%;
-    --card-foreground: 210 29% 24%;
+    --card-foreground: 210 29% 20%;
     --popover: 33 57% 89%;
     --popover-foreground: 210 29% 24%;
     --primary: 27 79% 52%;
@@ -50,7 +50,7 @@ All colors MUST be HSL.
     --secondary: 33 53% 64%;
     --secondary-foreground: 210 29% 24%;
     --muted: 184 7% 53%;
-    --muted-foreground: 210 20% 40%;
+    --muted-foreground: 33 20% 50%;
     --accent: 39 89% 52%;
     --accent-foreground: 210 29% 24%;
     --accent-glow: 39 89% 60%;

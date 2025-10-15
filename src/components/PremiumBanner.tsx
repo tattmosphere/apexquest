@@ -4,7 +4,7 @@ import { Sparkles } from "lucide-react";
 
 export const PremiumBanner = () => {
   return (
-    <Card className="p-6 bg-gradient-to-r from-primary/10 via-primary/5 to-background border-primary/20">
+    <Card className="p-6 bg-gradient-to-r from-card via-card/95 to-card/90 border-2 border-primary/30 shadow-lg">
       <div className="flex items-start gap-4">
         <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
           <Sparkles className="h-6 w-6 text-primary" />
