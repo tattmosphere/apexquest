@@ -1,12 +1,13 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Zap } from "lucide-react";
+import { Trophy, Zap, Flame } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useCharacter } from "@/hooks/useCharacter";
 import { useAvatar } from "@/hooks/useAvatar";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CharacterSheet } from "@/components/CharacterSheet";
+import { getFitnessLevelName, getClassColor } from "@/utils/avatarAssets";
 
 interface AvatarDisplayProps {
   level: number;
@@ -16,7 +17,15 @@ interface AvatarDisplayProps {
 export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
   const { user } = useAuth();
   const { character, xpProgress } = useCharacter();
-  const avatarUrl = useAvatar(user?.id || '', character?.class_type || 'warrior');
+  const avatarUrl = useAvatar(
+    user?.id || '', 
+    character?.class_type || 'warrior',
+    [], // equipment
+    level, // character level for fitness progression
+    'medium', // skin tone - can be made customizable later
+    'male', // gender - can be made customizable later
+    true // use real assets
+  );
   const [showCharacterSheet, setShowCharacterSheet] = useState(false);
 
   if (!character) return null;
@@ -30,13 +39,16 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
     survivor: "Survivor"
   };
 
+  const fitnessLevel = getFitnessLevelName(level);
+  const classColor = getClassColor(character.class_type);
+  
   const classColors: Record<string, string> = {
-    warrior: "border-red-500",
-    scout: "border-blue-500",
-    endurance_athlete: "border-green-500",
-    monk: "border-purple-500",
-    hybrid: "border-yellow-500",
-    survivor: "border-orange-500"
+    warrior: "border-warrior-red",
+    scout: "border-scout-blue",
+    endurance_athlete: "border-endurance-teal",
+    monk: "border-elite-purple",
+    hybrid: "border-apex-orange",
+    survivor: "border-survivor-green"
   };
 
   return (
@@ -67,7 +79,13 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
           <div className="flex-1 space-y-2">
             <div>
               <h3 className="text-lg font-bold text-foreground">{classLabels[character.class_type]}</h3>
-              <p className="text-sm text-muted-foreground">{character.xp.toLocaleString()} XP</p>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="text-xs">
+                  <Flame className="h-3 w-3 mr-1" />
+                  {fitnessLevel}
+                </Badge>
+                <p className="text-sm text-muted-foreground">{character.xp.toLocaleString()} XP</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="flex items-center gap-1">
