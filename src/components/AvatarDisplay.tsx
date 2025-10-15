@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useCharacter } from "@/hooks/useCharacter";
 import { useAvatar } from "@/hooks/useAvatar";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CharacterSheet } from "@/components/CharacterSheet";
 import { getFitnessLevelName, getClassColor } from "@/utils/avatarAssets";
 
@@ -17,6 +17,8 @@ interface AvatarDisplayProps {
 export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
   const { user } = useAuth();
   const { character, xpProgress } = useCharacter();
+  const [imageError, setImageError] = useState(false);
+  
   const avatarUrl = useAvatar(
     user?.id || '', 
     character?.class_type || 'warrior',
@@ -24,9 +26,21 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
     level, // character level for fitness progression
     'medium', // skin tone - can be made customizable later
     'male', // gender - can be made customizable later
-    true // use real assets
+    !imageError // use real assets only if no error
   );
   const [showCharacterSheet, setShowCharacterSheet] = useState(false);
+
+  // Debug logging
+  useEffect(() => {
+    if (character) {
+      console.log('Avatar Debug Info:', {
+        level,
+        classType: character.class_type,
+        avatarUrl,
+        imageError
+      });
+    }
+  }, [level, character, avatarUrl, imageError]);
 
   if (!character) return null;
 
@@ -51,6 +65,11 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
     survivor: "border-survivor-green"
   };
 
+  const handleImageError = () => {
+    console.error('Failed to load avatar image:', avatarUrl);
+    setImageError(true);
+  };
+
   return (
     <>
       <CharacterSheet 
@@ -67,6 +86,7 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
                 src={avatarUrl} 
                 alt="Character Avatar" 
                 className="h-full w-full rounded-full object-cover bg-background"
+                onError={handleImageError}
               />
             </div>
             <Badge 
@@ -132,3 +152,4 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
     </>
   );
 };
+
