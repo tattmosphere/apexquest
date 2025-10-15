@@ -383,7 +383,7 @@ const Index = () => {
             {character && <DailyQuestsCard />}
           </div>
           <div className="space-y-6">
-            <AvatarDisplay level={profile.level} totalPoints={profile.total_points} />
+            <AvatarDisplay level={profile.level} totalPoints={profile.total_points} currentChapter={currentChapter} />
             {character && (
               <StoryProgressCard
                 currentChapter={currentStoryChapter}

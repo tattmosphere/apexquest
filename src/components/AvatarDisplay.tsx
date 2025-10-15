@@ -13,9 +13,10 @@ import { getFitnessLevelName, getClassColor } from "@/utils/avatarAssets";
 interface AvatarDisplayProps {
   level: number;
   totalPoints: number;
+  currentChapter?: number;
 }
 
-export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
+export const AvatarDisplay = ({ level, totalPoints, currentChapter = 1 }: AvatarDisplayProps) => {
   const { user } = useAuth();
   const { character, xpProgress } = useCharacter();
   const [imageError, setImageError] = useState(false);
@@ -80,6 +81,7 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
         onOpenChange={setShowCharacterSheet}
         character={character}
         level={level}
+        currentChapter={currentChapter}
       />
       <AvatarCustomization
         open={showCustomization}
