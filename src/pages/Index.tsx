@@ -7,6 +7,7 @@ import { AvatarDisplay } from "@/components/AvatarDisplay";
 import { WorkoutCard } from "@/components/WorkoutCard";
 import { AchievementBadge } from "@/components/AchievementBadge";
 import { SortableAchievementBadge } from "@/components/SortableAchievementBadge";
+import { SortableDashboardSection } from "@/components/SortableDashboardSection";
 import { StatCard } from "@/components/StatCard";
 import { CustomWorkoutBuilder } from "@/components/CustomWorkoutBuilder";
 import { SettingsModal } from "@/components/SettingsModal";
@@ -42,6 +43,7 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import { 
@@ -90,6 +92,14 @@ const Index = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [achievementOrder, setAchievementOrder] = useState<string[]>([]);
+  const [sectionOrder, setSectionOrder] = useState<string[]>([
+    "rpg-features",
+    "stats",
+    "premium",
+    "quick-actions",
+    "workouts",
+    "achievements",
+  ]);
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
   const [workoutLogs, setWorkoutLogs] = useState<any[]>([]);
   const [hiddenWorkouts, setHiddenWorkouts] = useState<Set<string>>(new Set());
@@ -110,12 +120,41 @@ const Index = () => {
   const { character } = useCharacter();
   const { quests } = useDailyQuests();
 
+  // Load section order from localStorage
+  useEffect(() => {
+    const savedOrder = localStorage.getItem('dashboardSectionOrder');
+    if (savedOrder) {
+      try {
+        setSectionOrder(JSON.parse(savedOrder));
+      } catch {
+        // Use default order
+      }
+    }
+  }, []);
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const handleSectionDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      setSectionOrder((items) => {
+        const oldIndex = items.indexOf(active.id as string);
+        const newIndex = items.indexOf(over.id as string);
+        const newOrder = arrayMove(items, oldIndex, newIndex);
+        
+        // Save to localStorage
+        localStorage.setItem('dashboardSectionOrder', JSON.stringify(newOrder));
+        
+        return newOrder;
+      });
+    }
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -472,158 +511,198 @@ const Index = () => {
           </div>
         </div>
 
-        {/* RPG Features */}
-        {character && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
-            <Card 
-              className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-gradient-card"
-              onClick={() => setShowAbilities(true)}
-            >
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-primary/10 rounded-lg">
-                  <Zap className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold">Abilities</h3>
-                  <p className="text-sm text-muted-foreground">View skill tree</p>
-                </div>
-              </div>
-            </Card>
+        {/* Sortable Main Sections */}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleSectionDragEnd}
+        >
+          <SortableContext items={sectionOrder} strategy={verticalListSortingStrategy}>
+            <div className="space-y-8">
+              {sectionOrder.map((sectionId) => {
+                switch (sectionId) {
+                  case "rpg-features":
+                    return character ? (
+                      <SortableDashboardSection key="rpg-features" id="rpg-features">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
+                          <Card 
+                            className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-gradient-card"
+                            onClick={() => setShowAbilities(true)}
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="p-3 bg-primary/10 rounded-lg">
+                                <Zap className="h-6 w-6 text-primary" />
+                              </div>
+                              <div>
+                                <h3 className="font-semibold">Abilities</h3>
+                                <p className="text-sm text-muted-foreground">View skill tree</p>
+                              </div>
+                            </div>
+                          </Card>
 
-            <Card 
-              className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-gradient-card"
-              onClick={() => setShowShop(true)}
-            >
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-secondary/10 rounded-lg">
-                  <ShoppingBag className="h-6 w-6 text-secondary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold">Shop</h3>
-                  <p className="text-sm text-muted-foreground">{character.survival_credits} SC</p>
-                </div>
-              </div>
-            </Card>
-          </div>
-        )}
+                          <Card 
+                            className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-gradient-card"
+                            onClick={() => setShowShop(true)}
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="p-3 bg-secondary/10 rounded-lg">
+                                <ShoppingBag className="h-6 w-6 text-secondary" />
+                              </div>
+                              <div>
+                                <h3 className="font-semibold">Shop</h3>
+                                <p className="text-sm text-muted-foreground">{character.survival_credits} SC</p>
+                              </div>
+                            </div>
+                          </Card>
+                        </div>
+                      </SortableDashboardSection>
+                    ) : null;
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in">
-          <StatCard 
-            title="Total Workouts"
-            value={workoutLogs.length}
-            icon={Dumbbell}
-          />
-          <StatCard 
-            title="This Week"
-            value={weeklyWorkouts}
-            icon={Calendar}
-          />
-          <StatCard 
-            title="Achievements"
-            value={userAchievements.length}
-            icon={Trophy}
-          />
-          <StatCard 
-            title="Longest Streak"
-            value={`${profile.longest_streak}d`}
-            icon={Flame}
-          />
-        </div>
+                  case "stats":
+                    return (
+                      <SortableDashboardSection key="stats" id="stats">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in">
+                          <StatCard 
+                            title="Total Workouts"
+                            value={workoutLogs.length}
+                            icon={Dumbbell}
+                          />
+                          <StatCard 
+                            title="This Week"
+                            value={weeklyWorkouts}
+                            icon={Calendar}
+                          />
+                          <StatCard 
+                            title="Achievements"
+                            value={userAchievements.length}
+                            icon={Trophy}
+                          />
+                          <StatCard 
+                            title="Longest Streak"
+                            value={`${profile.longest_streak}d`}
+                            icon={Flame}
+                          />
+                        </div>
+                      </SortableDashboardSection>
+                    );
 
-        {/* Premium Banner */}
-        <PremiumBanner />
+                  case "premium":
+                    return (
+                      <SortableDashboardSection key="premium" id="premium">
+                        <PremiumBanner />
+                      </SortableDashboardSection>
+                    );
 
-        {/* Quick Actions */}
-        <div className="grid md:grid-cols-2 gap-4 animate-fade-in">
-          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setShowQuickWorkout(true)}>
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-primary/10 rounded-lg">
-                <Play className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Quick Workout</h3>
-                <p className="text-sm text-muted-foreground">Start tracking a cardio session now</p>
-              </div>
+                  case "quick-actions":
+                    return (
+                      <SortableDashboardSection key="quick-actions" id="quick-actions">
+                        <div className="grid md:grid-cols-2 gap-4 animate-fade-in">
+                          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setShowQuickWorkout(true)}>
+                            <div className="flex items-center gap-4">
+                              <div className="p-3 bg-primary/10 rounded-lg">
+                                <Play className="h-6 w-6 text-primary" />
+                              </div>
+                              <div>
+                                <h3 className="font-semibold">Quick Workout</h3>
+                                <p className="text-sm text-muted-foreground">Start tracking a cardio session now</p>
+                              </div>
+                            </div>
+                          </Card>
+                          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setShowLogPast(true)}>
+                            <div className="flex items-center gap-4">
+                              <div className="p-3 bg-accent/10 rounded-lg">
+                                <History className="h-6 w-6 text-accent" />
+                              </div>
+                              <div>
+                                <h3 className="font-semibold">Log Past Workout</h3>
+                                <p className="text-sm text-muted-foreground">Add a workout from earlier today</p>
+                              </div>
+                            </div>
+                          </Card>
+                        </div>
+                      </SortableDashboardSection>
+                    );
+
+                  case "workouts":
+                    return (
+                      <SortableDashboardSection key="workouts" id="workouts">
+                        <div className="space-y-4 animate-fade-in">
+                          <div className="flex items-center justify-between">
+                            <h2 className="text-2xl font-bold text-foreground">Available Workouts</h2>
+                            <Button
+                              onClick={() => setShowCustomBuilder(true)}
+                              variant="outline"
+                              size="sm"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              Create Custom
+                            </Button>
+                          </div>
+                          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {workouts
+                              .filter(workout => !hiddenWorkouts.has(workout.id))
+                              .map((workout) => (
+                                <WorkoutCard 
+                                  key={workout.id}
+                                  title={workout.title}
+                                  duration={`${workout.duration_minutes} min`}
+                                  exercises={workout.exercises_count}
+                                  onStart={() => handleStartWorkout(workout.id, workout.title)}
+                                  isCustom={(workout as any).is_custom && (workout as any).user_id === user?.id}
+                                  onEdit={() => setEditWorkoutId(workout.id)}
+                                  onDelete={() => handleDeleteWorkout(workout.id)}
+                                  onHide={() => handleHideWorkout(workout.id)}
+                                />
+                              ))}
+                          </div>
+                        </div>
+                      </SortableDashboardSection>
+                    );
+
+                  case "achievements":
+                    return (
+                      <SortableDashboardSection key="achievements" id="achievements">
+                        <div className="space-y-4 animate-fade-in">
+                          <div className="flex items-center justify-between">
+                            <h2 className="text-2xl font-bold text-foreground">Achievements</h2>
+                            <p className="text-sm text-muted-foreground">Drag to reorder</p>
+                          </div>
+                          <DndContext
+                            sensors={sensors}
+                            collisionDetection={closestCenter}
+                            onDragEnd={handleDragEnd}
+                          >
+                            <SortableContext items={achievementOrder} strategy={rectSortingStrategy}>
+                              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {orderedAchievements.map((achievement) => {
+                                  const isUnlocked = userAchievements.some(
+                                    (ua) => ua.achievement_id === achievement.id
+                                  );
+                                  return (
+                                    <SortableAchievementBadge
+                                      key={achievement.id}
+                                      id={achievement.id}
+                                      title={achievement.title}
+                                      description={achievement.description}
+                                      unlocked={isUnlocked}
+                                      icon={achievement.icon_name ? <Award className="h-6 w-6" /> : undefined}
+                                    />
+                                  );
+                                })}
+                              </div>
+                            </SortableContext>
+                          </DndContext>
+                        </div>
+                      </SortableDashboardSection>
+                    );
+
+                  default:
+                    return null;
+                }
+              })}
             </div>
-          </Card>
-          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setShowLogPast(true)}>
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-accent/10 rounded-lg">
-                <History className="h-6 w-6 text-accent" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Log Past Workout</h3>
-                <p className="text-sm text-muted-foreground">Add a workout from earlier today</p>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Today's Workouts */}
-        <div className="space-y-4 animate-fade-in">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-foreground">Available Workouts</h2>
-            <Button
-              onClick={() => setShowCustomBuilder(true)}
-              variant="outline"
-              size="sm"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Create Custom
-            </Button>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {workouts
-              .filter(workout => !hiddenWorkouts.has(workout.id))
-              .map((workout) => (
-                <WorkoutCard 
-                  key={workout.id}
-                  title={workout.title}
-                  duration={`${workout.duration_minutes} min`}
-                  exercises={workout.exercises_count}
-                  onStart={() => handleStartWorkout(workout.id, workout.title)}
-                  isCustom={(workout as any).is_custom && (workout as any).user_id === user?.id}
-                  onEdit={() => setEditWorkoutId(workout.id)}
-                  onDelete={() => handleDeleteWorkout(workout.id)}
-                  onHide={() => handleHideWorkout(workout.id)}
-                />
-              ))}
-          </div>
-        </div>
-
-        {/* Recent Achievements */}
-        <div className="space-y-4 animate-fade-in">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-foreground">Achievements</h2>
-            <p className="text-sm text-muted-foreground">Drag to reorder</p>
-          </div>
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext items={achievementOrder} strategy={rectSortingStrategy}>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {orderedAchievements.map((achievement) => {
-                  const isUnlocked = userAchievements.some(
-                    (ua) => ua.achievement_id === achievement.id
-                  );
-                  return (
-                    <SortableAchievementBadge
-                      key={achievement.id}
-                      id={achievement.id}
-                      title={achievement.title}
-                      description={achievement.description}
-                      unlocked={isUnlocked}
-                      icon={achievement.icon_name ? <Award className="h-6 w-6" /> : undefined}
-                    />
-                  );
-                })}
-              </div>
-            </SortableContext>
-          </DndContext>
-        </div>
+          </SortableContext>
+        </DndContext>
       </section>
 
       {/* Motivational CTA */}

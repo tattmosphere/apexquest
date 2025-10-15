@@ -187,10 +187,11 @@ export const SettingsModal = ({ open, onClose }: SettingsModalProps) => {
         </DialogHeader>
 
         <Tabs defaultValue="units" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="units">Units</TabsTrigger>
             <TabsTrigger value="body">Body Stats</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
+            <TabsTrigger value="layout">Layout</TabsTrigger>
             <TabsTrigger value="health">Health Sync</TabsTrigger>
           </TabsList>
 
@@ -321,6 +322,21 @@ export const SettingsModal = ({ open, onClose }: SettingsModalProps) => {
                   <SelectItem value="extra_active">Extra Active (athlete/physical job)</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="layout" className="space-y-4">
+            <div>
+              <Label className="text-base">Dashboard Layout</Label>
+              <p className="text-sm text-muted-foreground mb-4">
+                Customize the order of sections on your dashboard. Hover over sections on the main page to drag and reorder them.
+              </p>
+              <div className="p-4 bg-accent/50 rounded-lg">
+                <p className="text-sm">
+                  ℹ️ To reorder sections, close this settings dialog and hover over any section on your dashboard. 
+                  A grip handle will appear that you can drag to move the section up or down.
+                </p>
+              </div>
             </div>
           </TabsContent>
 
