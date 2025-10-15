@@ -41,7 +41,8 @@ import {
   BookOpen,
   ShoppingBag
 } from "lucide-react";
-import heroImage from "@/assets/hero-avatars.jpg";
+// Using hero banner from public folder
+const heroImage = "/hero-banner.png";
 
 interface Workout {
   id: string;
