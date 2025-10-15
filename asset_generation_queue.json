@@ -316,7 +316,108 @@
       ],
       "output_dir": "/home/ubuntu/apexquest/public/story/chapter5",
       "data_update": "Add Chapter 5 cards to storyChapters.ts with major boss battle flags"
+    },
+    {
+      "id": 8,
+      "name": "Chapter 6-7 Story Scenes",
+      "status": "pending",
+      "scheduled_date": "2025-10-23",
+      "type": "story_illustrations",
+      "chapter": 6,
+      "count": 8,
+      "description": "Generate 8 story scenes for Chapters 6-7",
+      "output_dir": "/home/ubuntu/apexquest/public/story",
+      "data_update": "Add Chapters 6-7 to storyChapters.ts"
+    },
+    {
+      "id": 9,
+      "name": "Elite Warrior Equipment",
+      "status": "pending",
+      "scheduled_date": "2025-10-24",
+      "type": "equipment_items",
+      "count": 10,
+      "description": "Generate 10 elite-tier warrior equipment items",
+      "output_dir": "/home/ubuntu/apexquest/public/equipment",
+      "data_update": "Update equipment.ts with elite-tier items"
+    },
+    {
+      "id": 10,
+      "name": "Mid-Game Achievement Badges",
+      "status": "pending",
+      "scheduled_date": "2025-10-25",
+      "type": "achievement_badges",
+      "count": 10,
+      "description": "Generate 10 mid-game achievement badges",
+      "output_dir": "/home/ubuntu/apexquest/public/achievements",
+      "data_update": "Update achievement system with mid-game badges"
+    },
+    {
+      "id": 11,
+      "name": "Rogue Class Starter Assets",
+      "status": "pending",
+      "scheduled_date": "2025-10-26",
+      "type": "equipment_items",
+      "count": 10,
+      "description": "Generate 10 rogue class starter equipment items",
+      "output_dir": "/home/ubuntu/apexquest/public/equipment",
+      "data_update": "Update equipment.ts with rogue starter items"
+    },
+    {
+      "id": 12,
+      "name": "Chapter 8-9 Story Scenes",
+      "status": "pending",
+      "scheduled_date": "2025-10-27",
+      "type": "story_illustrations",
+      "chapter": 8,
+      "count": 8,
+      "description": "Generate 8 story scenes for Chapters 8-9",
+      "output_dir": "/home/ubuntu/apexquest/public/story",
+      "data_update": "Add Chapters 8-9 to storyChapters.ts"
+    },
+    {
+      "id": 13,
+      "name": "Legendary Warrior Equipment",
+      "status": "pending",
+      "scheduled_date": "2025-10-28",
+      "type": "equipment_items",
+      "count": 10,
+      "description": "Generate 10 legendary-tier warrior equipment items",
+      "output_dir": "/home/ubuntu/apexquest/public/equipment",
+      "data_update": "Update equipment.ts with legendary-tier items"
+    },
+    {
+      "id": 14,
+      "name": "Mage Class Starter Assets",
+      "status": "pending",
+      "scheduled_date": "2025-10-29",
+      "type": "equipment_items",
+      "count": 10,
+      "description": "Generate 10 mage class starter equipment items",
+      "output_dir": "/home/ubuntu/apexquest/public/equipment",
+      "data_update": "Update equipment.ts with mage starter items"
+    },
+    {
+      "id": 15,
+      "name": "Chapter 10-11 Story Scenes",
+      "status": "pending",
+      "scheduled_date": "2025-10-30",
+      "type": "story_illustrations",
+      "chapter": 10,
+      "count": 8,
+      "description": "Generate 8 story scenes for Chapters 10-11",
+      "output_dir": "/home/ubuntu/apexquest/public/story",
+      "data_update": "Add Chapters 10-11 to storyChapters.ts"
+    },
+    {
+      "id": 16,
+      "name": "Endgame Achievement Badges",
+      "status": "pending",
+      "scheduled_date": "2025-10-31",
+      "type": "achievement_badges",
+      "count": 10,
+      "description": "Generate 10 endgame achievement badges",
+      "output_dir": "/home/ubuntu/apexquest/public/achievements",
+      "data_update": "Update achievement system with endgame badges"
     }
   ]
 }
-
