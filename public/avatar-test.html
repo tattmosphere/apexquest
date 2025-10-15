@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexQuest Avatar System Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 2rem;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #ff4444;
+        }
+        h2 {
+            margin: 2rem 0 1rem;
+            color: #ff6666;
+        }
+        .gender-section {
+            margin-bottom: 3rem;
+        }
+        .fitness-level {
+            margin-bottom: 2rem;
+        }
+        .fitness-level h3 {
+            margin-bottom: 1rem;
+            color: #ffaa44;
+        }
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .avatar-card {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .avatar-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #2a2a2a;
+        }
+        .avatar-card p {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        .stats {
+            background: #1a1a1a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .stat {
+            text-align: center;
+            padding: 0.5rem;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff4444;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        .error {
+            color: #ff4444;
+            font-size: 0.75rem;
+        }
+        .success {
+            color: #44ff44;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 ApexQuest Avatar System Test</h1>
+    
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value" id="total-avatars">0</div>
+            <div class="stat-label">Total Avatars</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="loaded-avatars">0</div>
+            <div class="stat-label">Loaded</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="failed-avatars">0</div>
+            <div class="stat-label">Failed</div>
+        </div>
+    </div>
+
+    <div id="avatar-display"></div>
+
+    <script>
+        const genders = ['male', 'female'];
+        const fitnessLevels = ['beginner', 'developing', 'athletic', 'elite', 'legendary'];
+        const skinTones = ['verylight', 'light', 'medium', 'tan', 'dark', 'verydark'];
+        
+        let totalAvatars = 0;
+        let loadedAvatars = 0;
+        let failedAvatars = 0;
+
+        function updateStats() {
+            document.getElementById('total-avatars').textContent = totalAvatars;
+            document.getElementById('loaded-avatars').textContent = loadedAvatars;
+            document.getElementById('failed-avatars').textContent = failedAvatars;
+        }
+
+        function createAvatarCard(gender, fitnessLevel, skinTone) {
+            const path = `/avatars/bodies/${gender}/warrior/warrior_${gender}_${fitnessLevel}_${skinTone}.png`;
+            totalAvatars++;
+            
+            const card = document.createElement('div');
+            card.className = 'avatar-card';
+            
+            const img = document.createElement('img');
+            img.src = path;
+            img.alt = `${gender} ${fitnessLevel} ${skinTone}`;
+            
+            const label = document.createElement('p');
+            label.textContent = skinTone;
+            
+            const status = document.createElement('p');
+            status.className = 'success';
+            status.textContent = 'Loading...';
+            
+            img.onload = () => {
+                loadedAvatars++;
+                status.textContent = '✓ Loaded';
+                status.className = 'success';
+                updateStats();
+            };
+            
+            img.onerror = () => {
+                failedAvatars++;
+                status.textContent = '✗ Failed';
+                status.className = 'error';
+                updateStats();
+            };
+            
+            card.appendChild(img);
+            card.appendChild(label);
+            card.appendChild(status);
+            
+            return card;
+        }
+
+        function renderAvatars() {
+            const container = document.getElementById('avatar-display');
+            
+            genders.forEach(gender => {
+                const genderSection = document.createElement('div');
+                genderSection.className = 'gender-section';
+                
+                const genderTitle = document.createElement('h2');
+                genderTitle.textContent = `${gender.charAt(0).toUpperCase() + gender.slice(1)} Warriors`;
+                genderSection.appendChild(genderTitle);
+                
+                fitnessLevels.forEach(fitnessLevel => {
+                    const levelSection = document.createElement('div');
+                    levelSection.className = 'fitness-level';
+                    
+                    const levelTitle = document.createElement('h3');
+                    levelTitle.textContent = fitnessLevel.charAt(0).toUpperCase() + fitnessLevel.slice(1);
+                    levelSection.appendChild(levelTitle);
+                    
+                    const grid = document.createElement('div');
+                    grid.className = 'avatar-grid';
+                    
+                    skinTones.forEach(skinTone => {
+                        const card = createAvatarCard(gender, fitnessLevel, skinTone);
+                        grid.appendChild(card);
+                    });
+                    
+                    levelSection.appendChild(grid);
+                    genderSection.appendChild(levelSection);
+                });
+                
+                container.appendChild(genderSection);
+            });
+            
+            updateStats();
+        }
+
+        // Render on page load
+        renderAvatars();
+    </script>
+</body>
+</html>
