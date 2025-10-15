@@ -151,17 +151,19 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
             </div>
             <div className="grid grid-cols-2 gap-2 mt-2">
               <Button 
-                variant="outline" 
+                variant="default" 
                 size="sm" 
                 onClick={() => setShowCharacterSheet(true)}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
               >
                 <Zap className="h-3 w-3 mr-1" />
                 View
               </Button>
               <Button 
-                variant="outline" 
+                variant="default" 
                 size="sm" 
                 onClick={() => setShowCustomization(true)}
+                className="bg-accent hover:bg-accent/90 text-white"
               >
                 🎨 Customize
               </Button>
