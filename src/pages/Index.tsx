@@ -18,6 +18,7 @@ import { CharacterCreationDialog } from "@/components/CharacterCreationDialog";
 import { DailyQuestsCard } from "@/components/DailyQuestsCard";
 import { AbilityTreeDialog } from "@/components/AbilityTreeDialog";
 import { StoryModeDialog } from "@/components/StoryModeDialog";
+import { StoryProgressCard } from "@/components/StoryProgressCard";
 import { ShopDialog } from "@/components/ShopDialog";
 import { useCharacter } from "@/hooks/useCharacter";
 import { useDailyQuests } from "@/hooks/useDailyQuests";
@@ -377,12 +378,21 @@ const Index = () => {
             <StreakCounter streakDays={profile.current_streak} />
             {character && <DailyQuestsCard />}
           </div>
-          <AvatarDisplay level={profile.level} totalPoints={profile.total_points} />
+          <div className="space-y-6">
+            <AvatarDisplay level={profile.level} totalPoints={profile.total_points} />
+            {character && (
+              <StoryProgressCard
+                currentChapter={1}
+                chapterProgress={33}
+                onViewStory={() => setShowStoryMode(true)}
+              />
+            )}
+          </div>
         </div>
 
         {/* RPG Features */}
         {character && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
             <Card 
               className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-gradient-card"
               onClick={() => setShowAbilities(true)}
@@ -394,21 +404,6 @@ const Index = () => {
                 <div>
                   <h3 className="font-semibold">Abilities</h3>
                   <p className="text-sm text-muted-foreground">View skill tree</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card 
-              className="p-6 hover:shadow-lg transition-shadow cursor-pointer bg-gradient-card"
-              onClick={() => setShowStory(true)}
-            >
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-accent/10 rounded-lg">
-                  <BookOpen className="h-6 w-6 text-accent" />
-                </div>
-                <div>
-                  <h3 className="font-semibold">Story Mode</h3>
-                  <p className="text-sm text-muted-foreground">Continue journey</p>
                 </div>
               </div>
             </Card>
