@@ -45,7 +45,7 @@ const Auth = () => {
             <Flame className="h-8 w-8 text-accent-foreground" />
           </div>
           <h1 className="text-3xl font-bold ml-3 bg-gradient-primary bg-clip-text text-transparent">
-            FitStreak
+            ApexQuest
           </h1>
         </div>
 
