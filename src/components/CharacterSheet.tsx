@@ -16,7 +16,15 @@ interface CharacterSheetProps {
 
 export const CharacterSheet = ({ open, onOpenChange, character, level }: CharacterSheetProps) => {
   const { user } = useAuth();
-  const avatarUrl = useAvatar(user?.id || '', character.class_type);
+  const avatarUrl = useAvatar(
+    user?.id || '', 
+    character.class_type,
+    [],
+    level,
+    character.avatar_skin_tone || 'medium',
+    character.avatar_gender || 'male',
+    true
+  );
 
   const classInfo: Record<string, { name: string; description: string }> = {
     warrior: { name: "Warrior", description: "Masters of strength training and raw power" },
@@ -39,11 +47,13 @@ export const CharacterSheet = ({ open, onOpenChange, character, level }: Charact
         <div className="space-y-6 py-4">
           {/* Avatar and Basic Info */}
           <div className="flex items-center gap-6">
-            <img 
-              src={avatarUrl} 
-              alt="Character" 
-              className="h-32 w-32 rounded-full border-4 border-primary"
-            />
+            <div className="h-32 w-32 rounded-full border-4 border-primary overflow-hidden bg-background flex-shrink-0">
+              <img 
+                src={avatarUrl} 
+                alt="Character" 
+                className="h-full w-full object-cover"
+              />
+            </div>
             <div className="flex-1 space-y-2">
               <div>
                 <h3 className="text-2xl font-bold">{info.name}</h3>

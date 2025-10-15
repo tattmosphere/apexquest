@@ -7,6 +7,7 @@ import { useAvatar } from "@/hooks/useAvatar";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { CharacterSheet } from "@/components/CharacterSheet";
+import { AvatarCustomization } from "@/components/AvatarCustomization";
 import { getFitnessLevelName, getClassColor } from "@/utils/avatarAssets";
 
 interface AvatarDisplayProps {
@@ -24,11 +25,12 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
     character?.class_type || 'warrior',
     [], // equipment
     level, // character level for fitness progression
-    'medium', // skin tone - can be made customizable later
-    'male', // gender - can be made customizable later
+    character?.avatar_skin_tone || 'medium',
+    character?.avatar_gender || 'male',
     !imageError // use real assets only if no error
   );
   const [showCharacterSheet, setShowCharacterSheet] = useState(false);
+  const [showCustomization, setShowCustomization] = useState(false);
 
   // Debug logging
   useEffect(() => {
@@ -77,6 +79,15 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
         onOpenChange={setShowCharacterSheet}
         character={character}
         level={level}
+      />
+      <AvatarCustomization
+        open={showCustomization}
+        onOpenChange={setShowCustomization}
+        currentGender={character.avatar_gender || 'male'}
+        currentSkinTone={character.avatar_skin_tone || 'medium'}
+        classType={character.class_type}
+        level={level}
+        onSave={() => window.location.reload()}
       />
       <Card className="relative overflow-hidden bg-gradient-card p-6 shadow-card">
         <div className="flex items-center gap-4">
@@ -137,15 +148,23 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
                 />
               </div>
             </div>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => setShowCharacterSheet(true)}
-              className="w-full mt-2"
-            >
-              <Zap className="h-3 w-3 mr-1" />
-              View Character
-            </Button>
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setShowCharacterSheet(true)}
+              >
+                <Zap className="h-3 w-3 mr-1" />
+                View
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setShowCustomization(true)}
+              >
+                🎨 Customize
+              </Button>
+            </div>
           </div>
         </div>
       </Card>

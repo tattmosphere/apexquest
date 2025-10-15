@@ -14,6 +14,8 @@ export interface Character {
   focus: number;
   resourcefulness: number;
   survival_credits: number;
+  avatar_gender?: 'male' | 'female' | 'neutral';
+  avatar_skin_tone?: 'verylight' | 'light' | 'medium' | 'tan' | 'dark' | 'verydark';
   created_at: string;
   updated_at: string;
 }
