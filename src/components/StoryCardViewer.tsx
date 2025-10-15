@@ -131,7 +131,7 @@ export const StoryCardViewer = ({
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
                   
                   {/* Text Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-8 space-y-4">
+                  <div className="absolute bottom-0 left-0 right-0 p-8 pb-24 space-y-4">
                     {card.title && (
                       <h3 className="text-2xl font-bold text-white drop-shadow-lg">
                         {card.title}

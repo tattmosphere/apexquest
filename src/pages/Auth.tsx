@@ -39,7 +39,7 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
-      <Card className="w-full max-w-md p-8 bg-background/95 backdrop-blur-sm shadow-elevated">
+      <Card className="w-full max-w-md p-8 bg-card backdrop-blur-sm shadow-elevated">
         <div className="flex items-center justify-center mb-8">
           <div className="bg-gradient-streak p-3 rounded-full">
             <Flame className="h-8 w-8 text-accent-foreground" />

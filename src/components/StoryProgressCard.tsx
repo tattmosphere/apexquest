@@ -114,6 +114,28 @@ export const StoryProgressCard = ({
           </div>
         )}
 
+        {/* Next Chapter Teaser */}
+        {nextChapter && chapterProgress >= 100 && (
+          <div className="space-y-2 p-4 bg-muted/30 rounded-lg border border-border/30">
+            <div className="flex items-center gap-2">
+              <BookOpen className="h-4 w-4 text-muted-foreground" />
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Coming Next
+              </p>
+            </div>
+            <h4 className="font-bold text-sm text-card-foreground">
+              Chapter {nextChapter.id}: {nextChapter.title}
+            </h4>
+            <p className="text-xs text-muted-foreground italic line-clamp-2">
+              "{nextChapter.preview}"
+            </p>
+            <div className="flex items-center gap-2 text-xs text-accent">
+              <Target className="h-3 w-3" />
+              <span>{nextChapter.requirement}</span>
+            </div>
+          </div>
+        )}
+
         {/* Action Button */}
         <Button 
           onClick={onViewStory}
