@@ -391,12 +391,12 @@ const Index = () => {
             {character && <DailyQuestsCard />}
           </div>
           <div className="space-y-6">
-            <AvatarDisplay level={profile.level} totalPoints={profile.total_points} currentChapter={currentChapter} />
+            <AvatarDisplay level={profile.level} totalPoints={profile.total_points} currentChapter={currentStoryChapter} />
             {character && (
               <StoryProgressCard
                 currentChapter={currentStoryChapter}
                 chapterProgress={100}
-                userClass={character.class}
+                userClass={character.class_type}
                 onViewStory={() => {
                   setShowStoryCards(true);
                 }}
