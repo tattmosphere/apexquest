@@ -8,118 +8,128 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* ApexQuest Wasteland Theme - Light Mode */
-    --background: 33 53% 64%;
+    /* === PRIMARY COLORS === */
+    --apex-orange: 27 79% 52%;
+    --apex-orange-dark: 27 75% 45%;
+    --apex-orange-light: 39 89% 52%;
+    
+    --wasteland-tan: 33 53% 64%;
+    --wasteland-tan-dark: 33 49% 52%;
+    --wasteland-tan-light: 33 57% 80%;
+    
+    --survivor-green: 82 38% 30%;
+    --survivor-green-dark: 82 45% 23%;
+    --survivor-green-light: 75 43% 40%;
+    
+    /* === ACCENT COLORS === */
+    --legendary-gold: 39 89% 52%;
+    --elite-purple: 276 44% 47%;
+    --scout-blue: 204 70% 53%;
+    --warrior-red: 5 60% 46%;
+    --endurance-teal: 172 60% 37%;
+    --monk-purple: 276 44% 47%;
+    --hybrid-orange: 27 79% 52%;
+    
+    /* === NEUTRAL COLORS === */
+    --dark-slate: 210 29% 24%;
+    --ash-gray: 184 7% 53%;
+    --light-beige: 33 57% 89%;
+    --pure-white: 0 0% 100%;
+    --deep-black: 0 0% 10%;
+    
+    /* Semantic Mappings */
+    --background: 33 57% 89%;
     --foreground: 210 29% 24%;
-
-    --card: 33 53% 70%;
+    --card: 33 53% 64%;
     --card-foreground: 210 29% 24%;
-
-    --popover: 33 53% 68%;
+    --popover: 33 57% 89%;
     --popover-foreground: 210 29% 24%;
-
-    /* Apex Orange - Primary Action Color */
-    --primary: 28 80% 52%;
+    --primary: 27 79% 52%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 28 80% 60%;
-
-    /* Wasteland Tan - Secondary */
-    --secondary: 33 40% 50%;
+    --primary-glow: 39 89% 52%;
+    --secondary: 33 53% 64%;
     --secondary-foreground: 210 29% 24%;
-
-    --muted: 33 30% 55%;
-    --muted-foreground: 210 20% 35%;
-
-    /* Legendary Gold for streaks and achievements */
+    --muted: 184 7% 53%;
+    --muted-foreground: 210 20% 40%;
     --accent: 39 89% 52%;
     --accent-foreground: 210 29% 24%;
     --accent-glow: 39 89% 60%;
-
-    /* Survivor Green for completed workouts */
-    --success: 82 38% 30%;
-    --success-foreground: 33 53% 70%;
-
-    /* Warrior Red for destructive actions */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
     --destructive: 5 60% 46%;
     --destructive-foreground: 0 0% 100%;
-
-    /* Elite Purple for premium/legendary items */
     --elite: 276 44% 47%;
     --elite-foreground: 0 0% 100%;
-
-    /* Scout Blue for informational elements */
     --info: 204 70% 53%;
     --info-foreground: 0 0% 100%;
-
-    --border: 33 30% 50%;
+    --border: 33 40% 50%;
     --input: 33 40% 55%;
-    --ring: 28 80% 52%;
-
-    --radius: 0.75rem;
-
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(28 80% 52%), hsl(39 89% 52%));
-    --gradient-hero: linear-gradient(135deg, hsl(28 80% 52%) 0%, hsl(82 38% 30%) 50%, hsl(39 89% 52%) 100%);
-    --gradient-streak: linear-gradient(135deg, hsl(39 89% 52%), hsl(28 80% 52%));
-    --gradient-card: linear-gradient(to bottom, hsl(33 53% 70%), hsl(33 53% 64%));
-
-    /* Shadows */
-    --shadow-glow: 0 0 40px hsl(28 80% 52% / 0.4);
+    --ring: 27 79% 52%;
+    --radius: 0.5rem;
+    
+    /* === SPACING === */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    --space-3xl: 64px;
+    
+    /* === SHADOWS === */
+    --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-strong: 0 6px 16px rgba(0, 0, 0, 0.16);
+    --shadow-glow: 0 0 40px hsl(27 79% 52% / 0.4);
     --shadow-card: 0 4px 20px hsl(210 29% 24% / 0.15);
     --shadow-elevated: 0 10px 40px hsl(210 29% 24% / 0.25);
-
-    /* Animations */
+    
+    /* === GRADIENTS === */
+    --gradient-primary: linear-gradient(135deg, hsl(27 79% 52%), hsl(39 89% 52%));
+    --gradient-hero: linear-gradient(135deg, hsl(27 79% 52%) 0%, hsl(82 38% 30%) 50%, hsl(39 89% 52%) 100%);
+    --gradient-streak: linear-gradient(135deg, hsl(39 89% 52%), hsl(27 79% 52%));
+    --gradient-card: linear-gradient(to bottom, hsl(33 53% 64%), hsl(33 57% 89%));
+    --gradient-achievement: linear-gradient(135deg, hsl(39 89% 52%), hsl(39 89% 60%));
+    
+    /* === ANIMATIONS === */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
 
   .dark {
-    /* ApexQuest Wasteland Theme - Dark Mode */
     --background: 210 29% 20%;
-    --foreground: 33 53% 75%;
-
+    --foreground: 33 57% 89%;
     --card: 210 29% 24%;
-    --card-foreground: 33 53% 75%;
-
+    --card-foreground: 33 57% 89%;
     --popover: 210 29% 22%;
-    --popover-foreground: 33 53% 75%;
-
-    --primary: 28 80% 52%;
+    --popover-foreground: 33 57% 89%;
+    --primary: 27 79% 52%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 28 80% 60%;
-
+    --primary-glow: 39 89% 60%;
     --secondary: 210 20% 30%;
-    --secondary-foreground: 33 53% 75%;
-
+    --secondary-foreground: 33 57% 89%;
     --muted: 210 20% 28%;
-    --muted-foreground: 33 30% 60%;
-
+    --muted-foreground: 184 7% 60%;
     --accent: 39 89% 52%;
     --accent-foreground: 210 29% 20%;
     --accent-glow: 39 89% 60%;
-
-    --success: 82 38% 35%;
-    --success-foreground: 33 53% 75%;
-
+    --success: 142 76% 40%;
+    --success-foreground: 0 0% 100%;
     --destructive: 5 60% 46%;
     --destructive-foreground: 0 0% 100%;
-
     --elite: 276 44% 47%;
     --elite-foreground: 0 0% 100%;
-
     --info: 204 70% 53%;
     --info-foreground: 0 0% 100%;
-
     --border: 210 20% 30%;
     --input: 210 20% 28%;
-    --ring: 28 80% 52%;
-
-    --gradient-primary: linear-gradient(135deg, hsl(28 80% 52%), hsl(39 89% 52%));
-    --gradient-hero: linear-gradient(135deg, hsl(28 80% 52%) 0%, hsl(82 38% 30%) 50%, hsl(39 89% 52%) 100%);
-    --gradient-streak: linear-gradient(135deg, hsl(39 89% 52%), hsl(28 80% 52%));
+    --ring: 27 79% 52%;
+    --gradient-primary: linear-gradient(135deg, hsl(27 79% 52%), hsl(39 89% 52%));
+    --gradient-hero: linear-gradient(135deg, hsl(27 79% 52%) 0%, hsl(82 38% 30%) 50%, hsl(39 89% 52%) 100%);
+    --gradient-streak: linear-gradient(135deg, hsl(39 89% 52%), hsl(27 79% 52%));
     --gradient-card: linear-gradient(to bottom, hsl(210 29% 24%), hsl(210 29% 20%));
-
-    --shadow-glow: 0 0 40px hsl(28 80% 52% / 0.5);
+    --gradient-achievement: linear-gradient(135deg, hsl(39 89% 52%), hsl(39 89% 60%));
+    --shadow-glow: 0 0 40px hsl(27 79% 52% / 0.5);
     --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.4);
     --shadow-elevated: 0 10px 40px hsl(0 0% 0% / 0.5);
   }
@@ -132,13 +142,267 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Barlow Semi Condensed', sans-serif;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  h1 {
+    font-size: 48px;
+  }
+
+  h2 {
+    font-size: 36px;
+  }
+
+  h3 {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  h4 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+}
+
+@layer components {
+  /* === BUTTONS === */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground font-heading text-base font-semibold uppercase tracking-wide;
+    @apply px-6 py-3 rounded-md border-0 shadow-medium cursor-pointer transition-all duration-300;
+  }
+  
+  .btn-primary:hover {
+    @apply shadow-strong;
+    transform: translateY(-2px);
+    background: hsl(var(--apex-orange-dark));
+  }
+  
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-secondary {
+    @apply bg-transparent text-primary font-heading text-base font-semibold uppercase tracking-wide;
+    @apply px-6 py-3 rounded-md border-2 border-primary cursor-pointer transition-all duration-300;
+  }
+  
+  .btn-secondary:hover {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .btn-success {
+    @apply bg-success text-success-foreground font-heading text-base font-semibold uppercase tracking-wide;
+    @apply px-6 py-3 rounded-md border-0 shadow-medium cursor-pointer transition-all duration-300;
+  }
+  
+  .btn-success:hover {
+    @apply shadow-strong;
+    background: hsl(142 76% 30%);
+  }
+
+  /* === CARDS === */
+  .card-textured {
+    background: hsl(var(--wasteland-tan));
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(0, 0, 0, 0.02) 10px,
+      rgba(0, 0, 0, 0.02) 20px
+    );
+  }
+
+  .avatar-card {
+    @apply bg-[hsl(var(--wasteland-tan))] border-2 border-[hsl(var(--dark-slate))] rounded-2xl p-4 shadow-medium text-center;
+  }
+
+  .achievement-card {
+    @apply bg-gradient-achievement border-2 border-[hsl(var(--legendary-gold))] rounded-lg p-4 text-white text-center;
+    box-shadow: 0 6px 16px rgba(243, 156, 18, 0.3);
+  }
+
+  /* === PROGRESS BARS === */
+  .xp-bar-container {
+    @apply w-full h-3 border border-[hsl(var(--wasteland-tan))] rounded-sm overflow-hidden relative;
+    background: #ECF0F1;
+  }
+
+  .xp-bar-fill {
+    @apply h-full rounded-sm transition-all duration-700;
+    background: linear-gradient(90deg, hsl(var(--apex-orange)), hsl(var(--legendary-gold)));
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  }
+
+  .xp-bar-text {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-heading text-[10px] font-bold text-[hsl(var(--dark-slate))];
+  }
+
+  /* === STREAK COUNTER === */
+  .streak-counter {
+    @apply inline-flex items-center justify-center w-20 h-20;
+    @apply bg-[hsl(var(--survivor-green))] border-3 border-[hsl(var(--survivor-green-dark))] rounded-full shadow-medium relative;
+  }
+
+  .streak-number {
+    @apply font-heading text-3xl font-bold text-white;
+  }
+
+  .streak-icon {
+    @apply absolute -top-2 -right-2 text-2xl;
+  }
+
+  /* === LEVEL BADGE === */
+  .level-badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-[hsl(var(--dark-slate))] rounded-md shadow-subtle;
+  }
+
+  .level-badge-number {
+    @apply font-heading text-xl font-bold text-[hsl(var(--legendary-gold))];
+  }
+
+  .level-badge-text {
+    @apply font-heading text-sm font-semibold text-white uppercase;
+  }
+
+  /* Tier-specific badge colors */
+  .level-badge.beginner { background: hsl(184 7% 63%); }
+  .level-badge.developing { background: hsl(142 76% 36%); }
+  .level-badge.athletic { background: hsl(204 70% 53%); }
+  .level-badge.elite { background: hsl(276 44% 47%); }
+  .level-badge.legendary { background: hsl(39 89% 52%); }
+
+  /* === CLASS INDICATOR === */
+  .class-indicator {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-sm font-heading text-sm font-semibold uppercase text-white;
+  }
+
+  .class-indicator.warrior { background: hsl(5 60% 46%); }
+  .class-indicator.scout { background: hsl(204 70% 53%); }
+  .class-indicator.endurance { background: hsl(172 60% 37%); }
+  .class-indicator.monk { background: hsl(276 44% 47%); }
+  .class-indicator.hybrid { background: hsl(27 79% 52%); }
+  .class-indicator.survivor { background: hsl(82 38% 30%); }
+
+  /* === ACHIEVEMENT BADGE === */
+  .achievement-badge {
+    @apply w-20 h-20 flex items-center justify-center relative;
+    @apply border-3 border-[hsl(var(--legendary-gold))] rounded-xl;
+    background: linear-gradient(135deg, hsl(var(--legendary-gold)), hsl(39 89% 60%));
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4);
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  }
+
+  .achievement-badge-icon {
+    @apply text-3xl text-white;
+  }
+
+  .achievement-badge.locked {
+    @apply opacity-50;
+    background: hsl(var(--ash-gray));
+    border-color: hsl(var(--ash-gray));
+  }
+
+  /* === STAT DISPLAY === */
+  .stat-display {
+    @apply flex items-center gap-3 px-4 py-3 bg-[hsl(var(--light-beige))] border border-[hsl(var(--wasteland-tan))] rounded-md;
+  }
+
+  .stat-icon {
+    @apply text-2xl;
+  }
+
+  .stat-label {
+    @apply font-body text-xs font-medium text-[hsl(var(--ash-gray))] uppercase tracking-wide;
+  }
+
+  .stat-value {
+    @apply font-heading text-2xl font-bold text-[hsl(var(--dark-slate))];
+  }
+
+  .stat-number {
+    @apply font-heading text-3xl font-bold;
+  }
+
+  .button-text {
+    @apply font-heading text-base font-semibold uppercase tracking-wide;
+  }
+}
+
+@layer utilities {
+  /* === ANIMATIONS === */
+  @keyframes levelUp {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .level-up-animation {
+    animation: levelUp 1.5s ease-in-out;
+  }
+
+  @keyframes xpGain {
+    0% {
+      width: var(--start-width);
+    }
+    100% {
+      width: var(--end-width);
+    }
+  }
+
+  .xp-gain-animation {
+    animation: xpGain 0.8s ease-out forwards;
+  }
+
+  @keyframes streakPulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 4px 8px rgba(85, 107, 47, 0.3);
+    }
+    50% {
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(85, 107, 47, 0.5);
+    }
+  }
+
+  .streak-pulse {
+    animation: streakPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes achievementUnlock {
+    0% {
+      transform: translateY(100px) scale(0.5);
+      opacity: 0;
+    }
+    50% {
+      transform: translateY(-20px) scale(1.1);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  .achievement-unlock {
+    animation: achievementUnlock 2s ease-out forwards;
   }
 }
