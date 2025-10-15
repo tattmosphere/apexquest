@@ -38,9 +38,9 @@ All colors MUST be HSL.
     --deep-black: 0 0% 10%;
     
     /* Semantic Mappings */
-    --background: 33 57% 89%;
+    --background: 33 20% 25%;
     --foreground: 210 29% 24%;
-    --card: 33 53% 64%;
+    --card: 33 53% 70%;
     --card-foreground: 210 29% 24%;
     --popover: 33 57% 89%;
     --popover-foreground: 210 29% 24%;
@@ -62,7 +62,7 @@ All colors MUST be HSL.
     --elite-foreground: 0 0% 100%;
     --info: 204 70% 53%;
     --info-foreground: 0 0% 100%;
-    --border: 33 40% 50%;
+    --border: 33 30% 35%;
     --input: 33 40% 55%;
     --ring: 27 79% 52%;
     --radius: 0.5rem;

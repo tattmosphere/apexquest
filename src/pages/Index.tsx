@@ -323,7 +323,7 @@ const Index = () => {
             alt="Fitness avatars" 
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-background" />
         </div>
         <div className="relative h-full container mx-auto px-4 flex flex-col items-center justify-center text-center">
           <div className="space-y-6 animate-fade-in">
@@ -356,13 +356,13 @@ const Index = () => {
                 </Button>
               </div>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground drop-shadow-lg">
+            <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
               Welcome Back,
-              <span className="block bg-gradient-streak bg-clip-text text-transparent">
+              <span className="block text-accent drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
                 {profile.display_name}!
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-primary-foreground/90 max-w-2xl">
+            <p className="text-xl md:text-2xl text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-w-2xl">
               Keep the momentum going and crush your fitness goals today.
             </p>
           </div>

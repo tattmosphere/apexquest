@@ -27,7 +27,8 @@ export const AvatarDisplay = ({ level, totalPoints }: AvatarDisplayProps) => {
     level, // character level for fitness progression
     character?.avatar_skin_tone || 'medium',
     character?.avatar_gender || 'male',
-    !imageError // use real assets only if no error
+    !imageError, // use real assets only if no error
+    'portrait' // use portrait variant for circular display
   );
   const [showCharacterSheet, setShowCharacterSheet] = useState(false);
   const [showCustomization, setShowCustomization] = useState(false);
