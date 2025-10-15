@@ -31,16 +31,24 @@ export const getClassPath = (classType: string): ClassType => {
   return classMap[classType] || 'warrior';
 };
 
+export type AvatarVariant = 'full' | 'portrait';
+
 /**
  * Get the path to an avatar asset
- * Format: /avatars/bodies/{gender}/{class}/{class}_{gender}_{fitnessLevel}_{skinTone}.png
+ * Format: 
+ * - Full body: /avatars/bodies/{gender}/{class}/{class}_{gender}_{fitnessLevel}_{skinTone}.png
+ * - Portrait: /avatars/portraits/{gender}/{class}/{class}_{gender}_{fitnessLevel}_{skinTone}_portrait.png
  */
 export const getAvatarPath = (
   classType: ClassType,
   gender: Gender,
   fitnessLevel: FitnessLevel,
-  skinTone: SkinTone
+  skinTone: SkinTone,
+  variant: AvatarVariant = 'full'
 ): string => {
+  if (variant === 'portrait') {
+    return `/avatars/portraits/${gender}/${classType}/${classType}_${gender}_${fitnessLevel}_${skinTone}_portrait.png`;
+  }
   return `/avatars/bodies/${gender}/${classType}/${classType}_${gender}_${fitnessLevel}_${skinTone}.png`;
 };
 
@@ -51,12 +59,13 @@ export const getAvatarAsset = (
   level: number,
   classType: string,
   skinTone: SkinTone = 'medium',
-  gender: Gender = 'male'
+  gender: Gender = 'male',
+  variant: AvatarVariant = 'full'
 ): string => {
   const fitnessLevel = getFitnessLevel(level);
   const classPath = getClassPath(classType);
   
-  return getAvatarPath(classPath, gender, fitnessLevel, skinTone);
+  return getAvatarPath(classPath, gender, fitnessLevel, skinTone, variant);
 };
 
 /**

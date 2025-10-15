@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { createAvatar } from '@dicebear/core';
 import { adventurer } from '@dicebear/collection';
-import { getAvatarAsset, type SkinTone, type Gender } from '@/utils/avatarAssets';
+import { getAvatarAsset, type SkinTone, type Gender, type AvatarVariant } from '@/utils/avatarAssets';
 
 const CLASS_COLORS = {
   warrior: ['b91c1c', 'dc2626'],
@@ -19,12 +19,13 @@ export const useAvatar = (
   level: number = 1,
   skinTone: SkinTone = 'medium',
   gender: Gender = 'male',
-  useRealAssets: boolean = true
+  useRealAssets: boolean = true,
+  variant: AvatarVariant = 'full'
 ) => {
   return useMemo(() => {
     // Use real avatar assets if available
     if (useRealAssets) {
-      return getAvatarAsset(level, classType, skinTone, gender);
+      return getAvatarAsset(level, classType, skinTone, gender, variant);
     }
     
     // Fallback to DiceBear generated avatars
@@ -34,6 +35,6 @@ export const useAvatar = (
       seed: userId,
       backgroundColor: [colors[0]],
     }).toDataUri();
-  }, [userId, classType, equipment, level, skinTone, gender, useRealAssets]);
+  }, [userId, classType, equipment, level, skinTone, gender, useRealAssets, variant]);
 };
 
