@@ -12,6 +12,9 @@ export interface Profile {
   last_workout_date: string | null;
   body_weight_lbs: number | null;
   body_weight_kg: number | null;
+  health_sync_enabled?: boolean;
+  last_health_sync_at?: string | null;
+  health_permissions_granted?: any;
 }
 
 export const useProfile = () => {

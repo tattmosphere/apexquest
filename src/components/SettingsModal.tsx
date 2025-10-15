@@ -10,6 +10,12 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { useHealthSync } from "@/hooks/useHealthSync";
+import { getPlatformName } from "@/utils/platform";
+import { Activity, RefreshCw } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
 interface SettingsModalProps {
   open: boolean;
@@ -19,6 +25,16 @@ interface SettingsModalProps {
 export const SettingsModal = ({ open, onClose }: SettingsModalProps) => {
   const { user } = useAuth();
   const { profile } = useProfile();
+  const { 
+    isAvailable, 
+    isEnabled, 
+    lastSyncAt, 
+    permissions, 
+    isSyncing,
+    enableSync, 
+    disableSync, 
+    performSync 
+  } = useHealthSync();
   
   // Type assertions for profile fields that exist in database but not yet in types
   const profileData = profile as any;
@@ -171,10 +187,11 @@ export const SettingsModal = ({ open, onClose }: SettingsModalProps) => {
         </DialogHeader>
 
         <Tabs defaultValue="units" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="units">Units</TabsTrigger>
             <TabsTrigger value="body">Body Stats</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
+            <TabsTrigger value="health">Health Sync</TabsTrigger>
           </TabsList>
 
           <TabsContent value="units" className="space-y-4">
@@ -305,6 +322,95 @@ export const SettingsModal = ({ open, onClose }: SettingsModalProps) => {
                 </SelectContent>
               </Select>
             </div>
+          </TabsContent>
+
+          <TabsContent value="health" className="space-y-4">
+            {!isAvailable ? (
+              <div className="p-4 bg-muted rounded-lg text-center">
+                <Activity className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
+                <h4 className="font-semibold mb-2">Health Sync Unavailable</h4>
+                <p className="text-sm text-muted-foreground">
+                  Health sync is only available on iOS and Android native apps.
+                  Export your project to GitHub and build native apps to enable this feature.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label className="text-base">Enable {getPlatformName()} Sync</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Sync workouts and body weight with {getPlatformName()}
+                    </p>
+                  </div>
+                  <Switch
+                    checked={isEnabled}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        enableSync();
+                      } else {
+                        disableSync();
+                      }
+                    }}
+                  />
+                </div>
+
+                {isEnabled && (
+                  <>
+                    <div className="p-4 bg-accent/50 rounded-lg space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Sync Status</span>
+                        <Badge variant={isSyncing ? "secondary" : "outline"}>
+                          {isSyncing ? "Syncing..." : "Active"}
+                        </Badge>
+                      </div>
+                      
+                      {lastSyncAt && (
+                        <p className="text-xs text-muted-foreground">
+                          Last synced: {formatDistanceToNow(new Date(lastSyncAt), { addSuffix: true })}
+                        </p>
+                      )}
+
+                      <Button
+                        onClick={performSync}
+                        disabled={isSyncing}
+                        size="sm"
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <RefreshCw className={`h-4 w-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+                        {isSyncing ? "Syncing..." : "Sync Now"}
+                      </Button>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm">Permissions Granted</Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <Badge variant={permissions.workouts ? "default" : "outline"}>
+                          {permissions.workouts ? "✓" : "×"} Workouts
+                        </Badge>
+                        <Badge variant={permissions.bodyWeight ? "default" : "outline"}>
+                          {permissions.bodyWeight ? "✓" : "×"} Body Weight
+                        </Badge>
+                        <Badge variant={permissions.steps ? "default" : "outline"}>
+                          {permissions.steps ? "✓" : "×"} Steps
+                        </Badge>
+                        <Badge variant={permissions.activeCalories ? "default" : "outline"}>
+                          {permissions.activeCalories ? "✓" : "×"} Calories
+                        </Badge>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-muted rounded-lg">
+                      <p className="text-xs text-muted-foreground">
+                        💡 Tip: Workouts you complete in ApexQuest will automatically sync to {getPlatformName()}, 
+                        and workouts from {getPlatformName()} will be imported to earn XP and level up your character!
+                      </p>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
           </TabsContent>
         </Tabs>
 

@@ -287,6 +287,48 @@ export type Database = {
           },
         ]
       }
+      health_sync_log: {
+        Row: {
+          created_at: string
+          data_type: string
+          error_message: string | null
+          external_id: string | null
+          id: string
+          metadata: Json | null
+          platform: string
+          status: string
+          sync_type: string
+          synced_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data_type: string
+          error_message?: string | null
+          external_id?: string | null
+          id?: string
+          metadata?: Json | null
+          platform: string
+          status?: string
+          sync_type: string
+          synced_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data_type?: string
+          error_message?: string | null
+          external_id?: string | null
+          id?: string
+          metadata?: Json | null
+          platform?: string
+          status?: string
+          sync_type?: string
+          synced_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       hidden_workouts: {
         Row: {
           hidden_at: string
@@ -376,9 +418,12 @@ export type Database = {
           current_streak: number
           display_name: string | null
           gender: string | null
+          health_permissions_granted: Json | null
+          health_sync_enabled: boolean
           height_cm: number | null
           height_inches: number | null
           id: string
+          last_health_sync_at: string | null
           last_workout_date: string | null
           level: number
           longest_streak: number
@@ -396,9 +441,12 @@ export type Database = {
           current_streak?: number
           display_name?: string | null
           gender?: string | null
+          health_permissions_granted?: Json | null
+          health_sync_enabled?: boolean
           height_cm?: number | null
           height_inches?: number | null
           id: string
+          last_health_sync_at?: string | null
           last_workout_date?: string | null
           level?: number
           longest_streak?: number
@@ -416,9 +464,12 @@ export type Database = {
           current_streak?: number
           display_name?: string | null
           gender?: string | null
+          health_permissions_granted?: Json | null
+          health_sync_enabled?: boolean
           height_cm?: number | null
           height_inches?: number | null
           id?: string
+          last_health_sync_at?: string | null
           last_workout_date?: string | null
           level?: number
           longest_streak?: number
@@ -741,27 +792,36 @@ export type Database = {
         Row: {
           completed_at: string | null
           created_at: string
+          health_kit_id: string | null
+          health_sync_status: string | null
           id: string
           notes: string | null
           started_at: string
+          synced_to_health: boolean
           user_id: string
           workout_id: string
         }
         Insert: {
           completed_at?: string | null
           created_at?: string
+          health_kit_id?: string | null
+          health_sync_status?: string | null
           id?: string
           notes?: string | null
           started_at?: string
+          synced_to_health?: boolean
           user_id: string
           workout_id: string
         }
         Update: {
           completed_at?: string | null
           created_at?: string
+          health_kit_id?: string | null
+          health_sync_status?: string | null
           id?: string
           notes?: string | null
           started_at?: string
+          synced_to_health?: boolean
           user_id?: string
           workout_id?: string
         }

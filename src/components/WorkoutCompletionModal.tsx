@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Sparkles, TrendingUp } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Sparkles, TrendingUp, Activity } from "lucide-react";
+import { useHealthSync } from "@/hooks/useHealthSync";
 
 interface WorkoutCompletionModalProps {
   open: boolean;
@@ -18,6 +20,7 @@ interface WorkoutCompletionModalProps {
   leveledUp: boolean;
   newAbilities?: any[];
   creditsGained?: number;
+  sessionId?: string;
 }
 
 export const WorkoutCompletionModal = ({
@@ -29,8 +32,19 @@ export const WorkoutCompletionModal = ({
   leveledUp,
   newAbilities = [],
   creditsGained = 0,
+  sessionId,
 }: WorkoutCompletionModalProps) => {
   const [displayXP, setDisplayXP] = useState(0);
+  const [healthSynced, setHealthSynced] = useState(false);
+  const { isEnabled, exportWorkout } = useHealthSync();
+
+  useEffect(() => {
+    if (open && sessionId && isEnabled) {
+      exportWorkout(sessionId).then((success) => {
+        setHealthSynced(success);
+      });
+    }
+  }, [open, sessionId, isEnabled]);
 
   useEffect(() => {
     if (open && xpGained > 0) {
@@ -121,6 +135,13 @@ export const WorkoutCompletionModal = ({
                   ))}
                 </div>
               </div>
+            )}
+
+            {isEnabled && healthSynced && (
+              <Badge variant="outline" className="flex items-center gap-2">
+                <Activity className="h-3 w-3" />
+                Synced to Health
+              </Badge>
             )}
           </div>
 
