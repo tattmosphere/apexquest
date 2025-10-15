@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Dumbbell, Clock, TrendingUp, Edit, Trash2 } from "lucide-react";
+import { Dumbbell, Clock, TrendingUp, Edit, Trash2, EyeOff } from "lucide-react";
 
 interface WorkoutCardProps {
   title: string;
@@ -10,9 +10,10 @@ interface WorkoutCardProps {
   isCustom?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
+  onHide?: () => void;
 }
 
-export const WorkoutCard = ({ title, duration, exercises, onStart, isCustom, onEdit, onDelete }: WorkoutCardProps) => {
+export const WorkoutCard = ({ title, duration, exercises, onStart, isCustom, onEdit, onDelete, onHide }: WorkoutCardProps) => {
   return (
     <Card 
       className="group overflow-hidden bg-gradient-card hover:shadow-elevated transition-all duration-300 border border-border/50"
@@ -59,6 +60,20 @@ export const WorkoutCard = ({ title, duration, exercises, onStart, isCustom, onE
                 className="h-8 w-8 text-destructive hover:text-destructive"
               >
                 <Trash2 className="h-4 w-4" />
+              </Button>
+            )}
+            {!isCustom && onHide && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onHide();
+                }}
+                className="h-8 w-8"
+                title="Hide workout"
+              >
+                <EyeOff className="h-4 w-4" />
               </Button>
             )}
           </div>

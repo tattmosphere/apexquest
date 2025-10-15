@@ -287,6 +287,27 @@ export type Database = {
           },
         ]
       }
+      hidden_workouts: {
+        Row: {
+          hidden_at: string
+          id: string
+          user_id: string
+          workout_id: string
+        }
+        Insert: {
+          hidden_at?: string
+          id?: string
+          user_id: string
+          workout_id: string
+        }
+        Update: {
+          hidden_at?: string
+          id?: string
+          user_id?: string
+          workout_id?: string
+        }
+        Relationships: []
+      }
       personal_records: {
         Row: {
           achieved_at: string

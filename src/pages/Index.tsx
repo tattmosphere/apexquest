@@ -71,6 +71,7 @@ const Index = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
   const [workoutLogs, setWorkoutLogs] = useState<any[]>([]);
+  const [hiddenWorkouts, setHiddenWorkouts] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [showCustomBuilder, setShowCustomBuilder] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -143,6 +144,15 @@ const Index = () => {
 
       if (logsError) throw logsError;
       setWorkoutLogs(logsData || []);
+
+      // Load hidden workouts
+      const { data: hiddenData, error: hiddenError } = await supabase
+        .from("hidden_workouts")
+        .select("workout_id")
+        .eq("user_id", user.id);
+
+      if (hiddenError) throw hiddenError;
+      setHiddenWorkouts(new Set(hiddenData?.map(h => h.workout_id) || []));
     } catch (error: any) {
       console.error("Error loading data:", error);
       toast.error("Failed to load data");
@@ -221,6 +231,22 @@ const Index = () => {
     } catch (error: any) {
       console.error("Error deleting workout:", error);
       toast.error("Failed to delete workout");
+    }
+  };
+
+  const handleHideWorkout = async (workoutId: string) => {
+    try {
+      const { error } = await supabase
+        .from("hidden_workouts")
+        .insert({ user_id: user!.id, workout_id: workoutId });
+
+      if (error) throw error;
+
+      toast.success("Workout hidden from your list");
+      loadData();
+    } catch (error: any) {
+      console.error("Error hiding workout:", error);
+      toast.error("Failed to hide workout");
     }
   };
 
@@ -470,18 +496,21 @@ const Index = () => {
             </Button>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {workouts.map((workout) => (
-              <WorkoutCard 
-                key={workout.id}
-                title={workout.title}
-                duration={`${workout.duration_minutes} min`}
-                exercises={workout.exercises_count}
-                onStart={() => handleStartWorkout(workout.id, workout.title)}
-                isCustom={(workout as any).is_custom && (workout as any).user_id === user?.id}
-                onEdit={() => setEditWorkoutId(workout.id)}
-                onDelete={() => handleDeleteWorkout(workout.id)}
-              />
-            ))}
+            {workouts
+              .filter(workout => !hiddenWorkouts.has(workout.id))
+              .map((workout) => (
+                <WorkoutCard 
+                  key={workout.id}
+                  title={workout.title}
+                  duration={`${workout.duration_minutes} min`}
+                  exercises={workout.exercises_count}
+                  onStart={() => handleStartWorkout(workout.id, workout.title)}
+                  isCustom={(workout as any).is_custom && (workout as any).user_id === user?.id}
+                  onEdit={() => setEditWorkoutId(workout.id)}
+                  onDelete={() => handleDeleteWorkout(workout.id)}
+                  onHide={() => handleHideWorkout(workout.id)}
+                />
+              ))}
           </div>
         </div>
 
