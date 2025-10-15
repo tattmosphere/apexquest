@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Barlow Semi Condensed', 'sans-serif'],
+        heading: ['Barlow Semi Condensed', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -44,6 +48,14 @@ export default {
         success: {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
+        },
+        elite: {
+          DEFAULT: "hsl(var(--elite))",
+          foreground: "hsl(var(--elite-foreground))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",

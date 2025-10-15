@@ -8,54 +8,65 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    /* ApexQuest Wasteland Theme - Light Mode */
+    --background: 33 53% 64%;
+    --foreground: 210 29% 24%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card: 33 53% 70%;
+    --card-foreground: 210 29% 24%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover: 33 53% 68%;
+    --popover-foreground: 210 29% 24%;
 
-    /* Vibrant purple-blue gradient colors */
-    --primary: 262 83% 58%;
+    /* Apex Orange - Primary Action Color */
+    --primary: 28 80% 52%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 250 100% 70%;
+    --primary-glow: 28 80% 60%;
 
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    /* Wasteland Tan - Secondary */
+    --secondary: 33 40% 50%;
+    --secondary-foreground: 210 29% 24%;
 
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: 33 30% 55%;
+    --muted-foreground: 210 20% 35%;
 
-    /* Gold/amber for streaks and achievements */
-    --accent: 43 96% 56%;
-    --accent-foreground: 26 83% 14%;
-    --accent-glow: 48 100% 67%;
+    /* Legendary Gold for streaks and achievements */
+    --accent: 39 89% 52%;
+    --accent-foreground: 210 29% 24%;
+    --accent-glow: 39 89% 60%;
 
-    /* Success green for completed workouts */
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 100%;
+    /* Survivor Green for completed workouts */
+    --success: 82 38% 30%;
+    --success-foreground: 33 53% 70%;
 
-    --destructive: 0 84.2% 60.2%;
+    /* Warrior Red for destructive actions */
+    --destructive: 5 60% 46%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 262 83% 58%;
+    /* Elite Purple for premium/legendary items */
+    --elite: 276 44% 47%;
+    --elite-foreground: 0 0% 100%;
+
+    /* Scout Blue for informational elements */
+    --info: 204 70% 53%;
+    --info-foreground: 0 0% 100%;
+
+    --border: 33 30% 50%;
+    --input: 33 40% 55%;
+    --ring: 28 80% 52%;
 
     --radius: 0.75rem;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(220 90% 56%));
-    --gradient-hero: linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(220 90% 56%) 50%, hsl(250 100% 70%) 100%);
-    --gradient-streak: linear-gradient(135deg, hsl(43 96% 56%), hsl(33 100% 53%));
-    --gradient-card: linear-gradient(to bottom, hsl(0 0% 100%), hsl(240 20% 99%));
+    --gradient-primary: linear-gradient(135deg, hsl(28 80% 52%), hsl(39 89% 52%));
+    --gradient-hero: linear-gradient(135deg, hsl(28 80% 52%) 0%, hsl(82 38% 30%) 50%, hsl(39 89% 52%) 100%);
+    --gradient-streak: linear-gradient(135deg, hsl(39 89% 52%), hsl(28 80% 52%));
+    --gradient-card: linear-gradient(to bottom, hsl(33 53% 70%), hsl(33 53% 64%));
 
     /* Shadows */
-    --shadow-glow: 0 0 40px hsl(262 83% 58% / 0.3);
-    --shadow-card: 0 4px 20px hsl(240 10% 3.9% / 0.08);
-    --shadow-elevated: 0 10px 40px hsl(240 10% 3.9% / 0.12);
+    --shadow-glow: 0 0 40px hsl(28 80% 52% / 0.4);
+    --shadow-card: 0 4px 20px hsl(210 29% 24% / 0.15);
+    --shadow-elevated: 0 10px 40px hsl(210 29% 24% / 0.25);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -63,47 +74,54 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    /* ApexQuest Wasteland Theme - Dark Mode */
+    --background: 210 29% 20%;
+    --foreground: 33 53% 75%;
 
-    --card: 240 10% 7%;
-    --card-foreground: 0 0% 98%;
+    --card: 210 29% 24%;
+    --card-foreground: 33 53% 75%;
 
-    --popover: 240 10% 7%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 210 29% 22%;
+    --popover-foreground: 33 53% 75%;
 
-    --primary: 262 83% 58%;
+    --primary: 28 80% 52%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 250 100% 70%;
+    --primary-glow: 28 80% 60%;
 
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 210 20% 30%;
+    --secondary-foreground: 33 53% 75%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 210 20% 28%;
+    --muted-foreground: 33 30% 60%;
 
-    --accent: 43 96% 56%;
-    --accent-foreground: 0 0% 100%;
-    --accent-glow: 48 100% 67%;
+    --accent: 39 89% 52%;
+    --accent-foreground: 210 29% 20%;
+    --accent-glow: 39 89% 60%;
 
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 100%;
+    --success: 82 38% 35%;
+    --success-foreground: 33 53% 75%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 5 60% 46%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 262 83% 58%;
+    --elite: 276 44% 47%;
+    --elite-foreground: 0 0% 100%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(220 90% 56%));
-    --gradient-hero: linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(220 90% 56%) 50%, hsl(250 100% 70%) 100%);
-    --gradient-streak: linear-gradient(135deg, hsl(43 96% 56%), hsl(33 100% 53%));
-    --gradient-card: linear-gradient(to bottom, hsl(240 10% 7%), hsl(240 10% 9%));
+    --info: 204 70% 53%;
+    --info-foreground: 0 0% 100%;
 
-    --shadow-glow: 0 0 40px hsl(262 83% 58% / 0.4);
-    --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.3);
-    --shadow-elevated: 0 10px 40px hsl(0 0% 0% / 0.4);
+    --border: 210 20% 30%;
+    --input: 210 20% 28%;
+    --ring: 28 80% 52%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(28 80% 52%), hsl(39 89% 52%));
+    --gradient-hero: linear-gradient(135deg, hsl(28 80% 52%) 0%, hsl(82 38% 30%) 50%, hsl(39 89% 52%) 100%);
+    --gradient-streak: linear-gradient(135deg, hsl(39 89% 52%), hsl(28 80% 52%));
+    --gradient-card: linear-gradient(to bottom, hsl(210 29% 24%), hsl(210 29% 20%));
+
+    --shadow-glow: 0 0 40px hsl(28 80% 52% / 0.5);
+    --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.4);
+    --shadow-elevated: 0 10px 40px hsl(0 0% 0% / 0.5);
   }
 }
 
@@ -114,5 +132,13 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
   }
 }
