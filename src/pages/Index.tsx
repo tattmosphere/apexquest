@@ -276,55 +276,10 @@ const Index = () => {
     } catch (error: any) {
       console.error("Error loading data:", error);
       toast.error("Failed to load data");
+    } finally {
+      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (!user) return;
-
-    const fetchData = async () => {
-      try {
-        // Fetch workouts
-        const { data: workoutsData } = await supabase
-          .from("workouts")
-          .select("*")
-          .limit(3);
-        
-        if (workoutsData) setWorkouts(workoutsData);
-
-        // Fetch achievements
-        const { data: achievementsData } = await supabase
-          .from("achievements")
-          .select("*")
-          .limit(6);
-        
-        if (achievementsData) setAchievements(achievementsData);
-
-        // Fetch user achievements
-        const { data: userAchievementsData } = await supabase
-          .from("user_achievements")
-          .select("achievement_id")
-          .eq("user_id", user.id);
-        
-        if (userAchievementsData) setUserAchievements(userAchievementsData);
-
-        // Fetch workout logs
-        const { data: logsData } = await supabase
-          .from("workout_logs")
-          .select("*")
-          .eq("user_id", user.id);
-        
-        if (logsData) setWorkoutLogs(logsData);
-
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [user]);
 
   const handleStartWorkout = (workoutId: string, workoutTitle: string) => {
     if (!user) {
