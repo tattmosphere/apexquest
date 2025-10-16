@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ChevronLeft } from "lucide-react";
+import { ChevronRight, ChevronLeft, X } from "lucide-react";
 
 interface StoryOnboardingProps {
   open: boolean;
@@ -157,18 +157,28 @@ export function StoryOnboarding({ open, onComplete }: StoryOnboardingProps) {
             </div>
 
             {/* Content */}
-            <div className="relative z-10 flex flex-col h-full min-h-[600px] p-8">
-              {/* Header */}
+              <div className="relative z-10 flex flex-col h-full min-h-[600px] p-8">
+                <DialogClose asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-4 right-4 text-white hover:bg-white/10"
+                    aria-label="Close onboarding"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </DialogClose>
+                {/* Header */}
               <div className="mb-6">
                 <div className="inline-block px-3 py-1 mb-2 text-xs font-semibold rounded-full bg-primary/20 text-primary border border-primary/30">
                   Chapter 1: The Bunker
                 </div>
-                <h2 id="story-onboarding-title" className="text-3xl font-bold text-white drop-shadow-lg">
+                <DialogTitle id="story-onboarding-title" className="text-3xl font-bold text-white drop-shadow-lg">
                   {currentStep.title}
-                </h2>
-                <p id="story-onboarding-description" className="sr-only">
+                </DialogTitle>
+                <DialogDescription id="story-onboarding-description" className="sr-only">
                   Story onboarding for Chapter 1: The Bunker
-                </p>
+                </DialogDescription>
               </div>
 
               {/* Story Text */}
