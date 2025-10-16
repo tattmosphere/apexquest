@@ -135,8 +135,8 @@ export function StoryOnboarding({ open, onComplete }: StoryOnboardingProps) {
   };
 
   return (
-    <Dialog open={open}>
-      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-background border-primary">
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onComplete(characterData)}>
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-background border-primary" aria-describedby="story-onboarding-description">
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -163,9 +163,12 @@ export function StoryOnboarding({ open, onComplete }: StoryOnboardingProps) {
                 <div className="inline-block px-3 py-1 mb-2 text-xs font-semibold rounded-full bg-primary/20 text-primary border border-primary/30">
                   Chapter 1: The Bunker
                 </div>
-                <h2 className="text-3xl font-bold text-white drop-shadow-lg">
+                <h2 id="story-onboarding-title" className="text-3xl font-bold text-white drop-shadow-lg">
                   {currentStep.title}
                 </h2>
+                <p id="story-onboarding-description" className="sr-only">
+                  Story onboarding for Chapter 1: The Bunker
+                </p>
               </div>
 
               {/* Story Text */}

@@ -678,12 +678,10 @@ const Index = () => {
             const { data: newCharacter, error } = await supabase
               .from('characters')
               .insert({
-                user_id: user?.id,
-                name: characterData.name,
-                class: characterData.class,
-                gender: characterData.gender,
-                skin_tone: characterData.skinTone,
-                level: 1,
+                user_id: user?.id!,
+                class_type: characterData.class,
+                avatar_gender: characterData.gender,
+                avatar_skin_tone: characterData.skinTone,
                 xp: 100, // Starting XP from "Awakened" achievement
                 strength: characterData.class === 'warrior' ? 12 : 10,
                 agility: characterData.class === 'rogue' ? 12 : 10,
@@ -691,7 +689,6 @@ const Index = () => {
                 focus: characterData.class === 'mage' ? 12 : 10,
                 resourcefulness: 10,
                 survival_credits: 50, // Starting credits from achievement
-                current_chapter: 2, // Chapter 1 completed during onboarding
               })
               .select()
               .single();
@@ -699,13 +696,10 @@ const Index = () => {
             if (error) throw error;
 
             // Award "Awakened" achievement
-            await supabase.from('achievements').insert({
-              user_id: user?.id,
-              name: 'Awakened',
-              description: 'Completed the tutorial and awakened from stasis',
-              icon: '🏆',
-              xp_reward: 100,
-              credit_reward: 50,
+            await supabase.from('user_achievements').insert({
+              user_id: user?.id!,
+              achievement_id: 'awakened',
+              unlocked_at: new Date().toISOString(),
             });
 
             toast.success('Welcome to the wasteland, survivor!');
