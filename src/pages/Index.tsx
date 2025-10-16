@@ -15,7 +15,7 @@ import { WorkoutSessionDialog } from "@/components/WorkoutSessionDialog";
 import { WorkoutEditDialog } from "@/components/WorkoutEditDialog";
 import { QuickWorkoutDialog } from "@/components/QuickWorkoutDialog";
 import { LogPastWorkoutDialog } from "@/components/LogPastWorkoutDialog";
-import { CharacterCreationDialog } from "@/components/CharacterCreationDialog";
+import { StoryOnboarding } from "@/components/StoryOnboarding";
 import { DailyQuestsCard } from "@/components/DailyQuestsCard";
 import { AbilityTreeDialog } from "@/components/AbilityTreeDialog";
 import { StoryModeDialog } from "@/components/StoryModeDialog";
@@ -670,12 +670,51 @@ const Index = () => {
         onWorkoutLogged={loadData}
       />
 
-      <CharacterCreationDialog 
+      <StoryOnboarding 
         open={showCharacterCreation}
-        onOpenChange={setShowCharacterCreation}
-        onCharacterCreated={() => {
-          setShowCharacterCreation(false);
-          loadData();
+        onComplete={async (characterData) => {
+          try {
+            // Create character with story onboarding data
+            const { data: newCharacter, error } = await supabase
+              .from('characters')
+              .insert({
+                user_id: user?.id,
+                name: characterData.name,
+                class: characterData.class,
+                gender: characterData.gender,
+                skin_tone: characterData.skinTone,
+                level: 1,
+                xp: 100, // Starting XP from "Awakened" achievement
+                strength: characterData.class === 'warrior' ? 12 : 10,
+                agility: characterData.class === 'rogue' ? 12 : 10,
+                endurance: 10,
+                focus: characterData.class === 'mage' ? 12 : 10,
+                resourcefulness: 10,
+                survival_credits: 50, // Starting credits from achievement
+                current_chapter: 2, // Chapter 1 completed during onboarding
+              })
+              .select()
+              .single();
+
+            if (error) throw error;
+
+            // Award "Awakened" achievement
+            await supabase.from('achievements').insert({
+              user_id: user?.id,
+              name: 'Awakened',
+              description: 'Completed the tutorial and awakened from stasis',
+              icon: '🏆',
+              xp_reward: 100,
+              credit_reward: 50,
+            });
+
+            toast.success('Welcome to the wasteland, survivor!');
+            setShowCharacterCreation(false);
+            loadData();
+          } catch (error) {
+            console.error('Error creating character:', error);
+            toast.error('Failed to create character');
+          }
         }}
       />
       
